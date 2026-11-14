@@ -1,0 +1,584 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Metro Transit Command - Overview Dashboard</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-variant": "#e3e1ec",
+            "surface-container-highest": "#e3e1ec",
+            "tertiary-container": "#636d82",
+            "secondary-fixed-dim": "#bdc6e0",
+            "on-tertiary-fixed-variant": "#3d475a",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#00174b",
+            "surface": "#fbf8ff",
+            "inverse-primary": "#b4c5ff",
+            "surface-container-high": "#e8e7f1",
+            "on-surface": "#1a1b22",
+            "on-secondary": "#ffffff",
+            "inverse-on-surface": "#f1effa",
+            "on-secondary-container": "#5a6278",
+            "outline": "#737686",
+            "primary": "#004ac6",
+            "secondary-container": "#d7dff9",
+            "on-primary-container": "#eeefff",
+            "surface-bright": "#fbf8ff",
+            "on-primary": "#ffffff",
+            "on-surface-variant": "#434655",
+            "on-secondary-fixed-variant": "#3e475b",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#121b2e",
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "primary-fixed": "#dbe1ff",
+            "surface-container-low": "#f4f2fd",
+            "on-background": "#1a1b22",
+            "on-tertiary": "#ffffff",
+            "tertiary": "#4b5569",
+            "primary-container": "#2563eb",
+            "secondary-fixed": "#d9e2fc",
+            "on-error-container": "#93000a",
+            "surface-tint": "#0053db",
+            "tertiary-fixed-dim": "#bdc7de",
+            "background": "#fbf8ff",
+            "on-tertiary-container": "#ebefff",
+            "primary-fixed-dim": "#b4c5ff",
+            "on-primary-fixed-variant": "#003ea8",
+            "secondary": "#555e74",
+            "outline-variant": "#c3c6d7",
+            "surface-container": "#eeedf7",
+            "on-tertiary-fixed": "#111c2d",
+            "surface-dim": "#dad9e3",
+            "inverse-surface": "#2f3038",
+            "tertiary-fixed": "#d9e3fb"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter-desktop": "1rem",
+            "margin": "1rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1rem",
+            "space-xl": "1.5rem",
+            "margin-desktop": "1.5rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter": "0.75rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Inter"],
+            "mono-data": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "label-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-xl": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "mono-data": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-low text-on-surface font-body-md antialiased min-h-screen selection:bg-secondary-container selection:text-primary">
+<!-- SIDEBAR (Fixed 210px, Shared Component blueprint) -->
+<aside class="fixed top-14 left-0 h-[calc(100vh-56px)] w-[220px] z-30 bg-white border-r border-slate-200 flex flex-col justify-between p-3 select-none">
+<div class="space-y-1">
+<!-- Navigation Tabs -->
+<nav class="space-y-1">
+<!-- OVERVIEW (Active) -->
+<a class="bg-blue-50 text-blue-600 font-medium px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined text-blue-600" style="font-variation-settings: &quot;FILL&quot; 1; font-size: 18px;">dashboard</span>
+<span>Overview</span>
+</div>
+<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+</a>
+<!-- Live Monitoring -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined" style="font-size: 18px;">videocam</span>
+<span>Live Monitoring</span>
+</div>
+<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">4</span>
+</a>
+<!-- AI Detection -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined" style="font-size: 18px;">neurology</span>
+<span>AI Detection</span>
+</div>
+<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 font-medium">99.4%</span>
+</a>
+<!-- Incidents -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined" style="font-size: 18px;">warning</span>
+<span>Incidents</span>
+</div>
+<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 font-medium border border-amber-200">7</span>
+</a>
+<!-- Emergency Response -->
+<a class="text-red-600 hover:bg-red-50/60 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
+<div class="flex items-center space-x-2.5">
+<span class="material-symbols-outlined text-red-600" style="font-size: 18px;">emergency</span>
+<span class="font-medium">Emergency</span>
+</div>
+<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-medium">1 Crit</span>
+</a>
+<div class="pt-4 pb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400">OPERATIONS</div>
+<!-- Analytics -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">monitoring</span>
+<span>Analytics</span>
+</a>
+<!-- Camera Management -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">video_settings</span>
+<span>Camera Management</span>
+</a>
+<!-- Reports -->
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">assessment</span>
+<span>Reports</span>
+</a>
+</nav>
+</div>
+<!-- Bottom System Nav -->
+<div class="pt-3 border-t border-slate-200 space-y-1">
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">settings</span>
+<span>Settings</span>
+</a>
+<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">help</span>
+<span>Diagnostics &amp; Help</span>
+</a>
+</div>
+</aside>
+<!-- TOP BAR (Fixed left 210px, Shared Component blueprint) -->
+<header class="fixed top-0 right-0 left-0 h-14 z-40 bg-white border-b border-slate-200 flex items-center justify-between px-6 select-none">
+<!-- Left: Metro Command Brand -->
+<div class="flex items-center space-x-3 w-[220px]">
+<div class="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg text-white flex-shrink-0 shadow-sm">
+<span class="material-symbols-outlined" style="font-size: 20px;">subway</span>
+</div>
+<div class="min-w-0">
+<div class="text-sm font-semibold text-slate-900 tracking-tight leading-tight">Metro Command</div>
+<div class="text-[11px] text-slate-500 tracking-normal leading-tight mt-0.5">Platform Safety &amp; Ops</div>
+</div>
+</div>
+<!-- Center: Clean Search Bar -->
+<div class="flex-1 max-w-md mx-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400 pointer-events-none" style="font-size: 18px;">search</span>
+<input class="h-9 w-full pl-9 pr-12 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-blue-600 focus:outline-none focus:ring-0 text-slate-900 placeholder:text-slate-400 transition-colors" placeholder="Search platform, train ID, camera, or incident..." type="text">
+<span class="absolute right-2.5 text-[10px] font-mono-data bg-white text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded">⌘K</span>
+</div>
+</div>
+<!-- Right Controls: Notifications, Operator Profile, Emergency Dispatch -->
+<div class="flex items-center space-x-4">
+<!-- Notifications -->
+<button class="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600 border border-slate-200 transition-colors" title="Notifications">
+<span class="material-symbols-outlined" style="font-size: 18px;">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+</button>
+<div class="h-5 w-[1px] bg-slate-200"></div>
+<!-- Operator Profile -->
+<div class="flex items-center space-x-2.5 px-2 py-1 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">
+<div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 text-xs font-semibold">
+        JD
+      </div>
+<div class="text-left">
+<div class="text-xs font-semibold text-slate-900 leading-tight">Operator J. Doe</div>
+<div class="text-[11px] text-slate-500 leading-tight mt-0.5">Station Hub A</div>
+</div>
+</div>
+<!-- Red Emergency Dispatch CTA -->
+<button class="h-9 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold tracking-wide flex items-center space-x-2 shadow-sm transition-colors active:scale-[0.99]">
+<span class="material-symbols-outlined" style="font-size: 18px;">gpp_maybe</span>
+<span>Emergency Dispatch</span>
+</button>
+</div>
+</header>
+<!-- MAIN CANVAS CONTAINER -->
+<main class="ml-[220px] pt-14 min-h-screen bg-slate-50 p-6">
+<!-- PAGE HEADER -->
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-3">
+<div>
+<h1 class="text-[24px] font-semibold text-slate-900 tracking-tight">Platform Safety Overview</h1>
+<p class="text-xs text-slate-500 mt-0.5">Monitor platform activity, detect potential risks and manage safety incidents in real time.</p>
+</div>
+<!-- Header Controls -->
+<div class="flex items-center space-x-2.5">
+<div class="inline-flex p-0.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-medium">
+<button class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-colors">Last 24 Hours</button>
+<button class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-colors">Last 7 Days</button>
+<button class="px-3 py-1.5 rounded-md bg-white text-blue-600 font-semibold shadow-xs">Current Shift</button>
+</div>
+<button class="h-8 px-3 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-medium rounded-lg flex items-center space-x-1.5 shadow-xs transition-colors">
+<span class="material-symbols-outlined text-slate-500" style="font-size: 16px;">download</span>
+<span>Export Incident Log</span>
+</button>
+</div>
+</div>
+<!-- ROW OF 6 KPI CARDS (Identical height, zero elevation, clean precision hairlines) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<!-- 1. Active Cameras -->
+<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-xs font-medium text-slate-500">
+<span>Active Cameras</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="my-2">
+<div class="text-2xl font-bold text-slate-900 tracking-tight">428 <span class="text-sm font-normal text-slate-400">/ 430</span></div>
+</div>
+<div class="flex items-center space-x-1.5 text-xs text-emerald-700 font-medium">
+<span class="material-symbols-outlined text-emerald-600" style="font-size: 14px;">check_circle</span>
+<span>99.5% Operational</span>
+</div>
+</div>
+<!-- 2. Active Incidents -->
+<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-xs font-medium text-slate-500">
+<span>Active Incidents</span>
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+</div>
+<div class="my-2">
+<div class="text-2xl font-bold text-slate-900 tracking-tight">7 Active</div>
+</div>
+<div class="text-xs text-slate-500">
+      3 In Review · 4 Dispatched
+    </div>
+</div>
+<!-- 3. Critical Alerts (Accent Border) -->
+<div class="bg-white border-l-4 border-l-red-500 border-y border-r border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-xs font-semibold text-red-600">
+<span>Critical Alerts</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-data bg-red-100 text-red-700 uppercase">Immediate</span>
+</div>
+<div class="my-2">
+<div class="text-2xl font-bold text-red-600 tracking-tight">1 Immediate</div>
+</div>
+<div class="text-xs font-medium text-red-600 truncate" title="Platform 3 Guideway Track">
+      Platform 3 Guideway Track
+    </div>
+</div>
+<!-- 4. AI Detection Accuracy -->
+<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
+<div class="flex items-center justify-between text-xs font-medium text-slate-500">
+<span>AI Detection Accuracy</span>
+<span class="material-symbols-outlined text-blue-600" style="font-size: 16px;">auto_graph</span>
+</div>
+<div class="my-2">
+<div class="text-2xl font-bold text-slate-900 tracking-tight">99.4%</div>
+</div>
+<div class="text-xs text-slate-500 font-medium">
+      Target: 92.0% <span class="text-emerald-600 font-semibold">(+7.4%)</span>
+</div>
+</div>
+</div>
+<!-- MAIN TWO-COLUMN DASHBOARD GRID (65% / 35%) -->
+<div class="space-y-6">
+<!-- FULL-WIDTH Incident Log Table Card -->
+<div class="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
+<!-- Table Header -->
+<div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
+<div class="flex items-center space-x-2.5">
+<span class="text-sm font-semibold text-slate-900">Active &amp; Recent Incident Log</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">7 pending</span>
+</div>
+<button class="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center space-x-1">
+<span>View All Incidents</span>
+<span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
+</button>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+<th class="py-2.5 px-4">Incident ID</th>
+<th class="py-2.5 px-4">Classification</th>
+<th class="py-2.5 px-4">Platform</th>
+<th class="py-2.5 px-4">Severity</th>
+<th class="py-2.5 px-4">Time</th>
+<th class="py-2.5 px-4 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 text-xs">
+<!-- Row 1: Critical -->
+<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
+<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8942</td>
+<td class="py-3 px-4 font-medium text-slate-900">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
+<span>Track Intrusion</span>
+</div>
+</td>
+<td class="py-3 px-4 text-slate-600 font-medium">Platform 3 (South)</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-red-50 text-red-700 border border-red-200">
+                CRITICAL
+              </span>
+</td>
+<td class="py-3 px-4 font-mono-data text-slate-500">42s ago</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200">
+                Dispatched
+              </span>
+</td>
+</tr>
+<!-- Row 2: Warning -->
+<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
+<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8941</td>
+<td class="py-3 px-4 font-medium text-slate-900">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
+<span>Yellow-Line Crossing</span>
+</div>
+</td>
+<td class="py-3 px-4 text-slate-600 font-medium">Platform 1 (North)</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                WARNING
+              </span>
+</td>
+<td class="py-3 px-4 font-mono-data text-slate-500">2m ago</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
+                Audio Warning
+              </span>
+</td>
+</tr>
+<!-- Row 3: Medium -->
+<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
+<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8940</td>
+<td class="py-3 px-4 font-medium text-slate-900">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
+<span>Unattended Luggage</span>
+</div>
+</td>
+<td class="py-3 px-4 text-slate-600 font-medium">Platform 5 (Center)</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                MEDIUM
+              </span>
+</td>
+<td class="py-3 px-4 font-mono-data text-slate-500">8m ago</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                Investigating
+              </span>
+</td>
+</tr>
+<!-- Row 4: Caution -->
+<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
+<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8939</td>
+<td class="py-3 px-4 font-medium text-slate-900">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0"></span>
+<span>Crowd Surge &gt; 85%</span>
+</div>
+</td>
+<td class="py-3 px-4 text-slate-600 font-medium">Platform 2 (Concourse)</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                CAUTION
+              </span>
+</td>
+<td class="py-3 px-4 font-mono-data text-slate-500">14m ago</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                Gate Metering
+              </span>
+</td>
+</tr>
+<!-- Row 5: Nominal -->
+<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
+<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8938</td>
+<td class="py-3 px-4 font-medium text-slate-900">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+<span>Wheelchair Assistance</span>
+</div>
+</td>
+<td class="py-3 px-4 text-slate-600 font-medium">Platform 4 (Elevator A)</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                NOMINAL
+              </span>
+</td>
+<td class="py-3 px-4 font-mono-data text-slate-500">22m ago</td>
+<td class="py-3 px-4 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Resolved
+              </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer -->
+<div class="px-5 py-3 border-t border-slate-200 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
+<span>Showing 5 of 7 active incidents</span>
+<a class="font-medium text-blue-600 hover:text-blue-700 flex items-center space-x-1" href="#">
+<span>View All Incidents</span>
+<span>→</span>
+</a>
+</div>
+</div>
+
+<!-- 3-COLUMN HORIZONTAL GRID BELOW TABLE -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- 1. Critical Alerts Action Card -->
+<div class="bg-white border-2 border-red-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-red-100">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-red-600" style="font-size: 18px;">error</span>
+<span class="text-xs font-bold text-red-700 uppercase tracking-wide">Immediate Action Required</span>
+</div>
+<span class="text-[11px] font-mono-data text-red-600 font-semibold">42s ago</span>
+</div>
+<div class="mt-3">
+<div class="text-sm font-semibold text-slate-900">Platform 3 (Track 2A)</div>
+<div class="text-xs text-red-600 font-medium mt-0.5">Guideway Intrusion Detected · Speed Restricted 15km/h</div>
+<p class="text-xs text-slate-500 mt-2">Officer J. Cooper dispatched to south perimeter gate. Sensors confirm unauthorized track presence.</p>
+</div>
+</div>
+<div class="mt-4 flex items-center space-x-2">
+<button class="flex-1 h-8 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-semibold tracking-wide transition-colors flex items-center justify-center space-x-1">
+<span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
+<span>Interlock Guideway</span>
+</button>
+<button class="px-3 h-8 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded text-xs font-medium transition-colors">
+Acknowledge
+</button>
+</div>
+</div>
+
+<!-- 2. Camera Operational Status Card -->
+<div class="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-2.5 border-b border-slate-200 mb-3">
+<div class="text-xs font-semibold text-slate-900">Camera Operational Status</div>
+<a class="text-[11px] font-medium text-blue-600 hover:text-blue-700" href="#">Manage Cameras →</a>
+</div>
+<div class="flex items-center justify-between text-xs mb-1.5">
+<span class="font-medium text-slate-700">428 Operational (99.5%)</span>
+<span class="text-[11px] font-medium text-amber-700">2 Maintenance</span>
+</div>
+<div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex mb-3">
+<div class="bg-emerald-500 h-2 rounded-l-full" style="width: 99.5%"></div>
+<div class="bg-amber-400 h-2 rounded-r-full" style="width: 0.5%"></div>
+</div>
+<div class="space-y-1.5 pt-1 text-[11px]">
+<div class="flex items-center justify-between p-1.5 bg-slate-50 rounded border border-slate-100">
+<span class="text-slate-700 font-mono-data font-medium">Cam #104 · Plat 2 (West)</span>
+<span class="text-amber-700 font-medium">Lens Occlusion</span>
+</div>
+<div class="flex items-center justify-between p-1.5 bg-slate-50 rounded border border-slate-100">
+<span class="text-slate-700 font-mono-data font-medium">Cam #219 · Hub Concourse</span>
+<span class="text-amber-700 font-medium">Signal Low (4fps)</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 3. Recent Safety Activity (Live Feed) -->
+<div class="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-2.5 border-b border-slate-200 mb-3">
+<div class="text-xs font-semibold text-slate-900">Recent Safety Activity</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live Stream Active"></span>
+</div>
+<div class="space-y-2.5 text-xs">
+<div class="flex items-start space-x-2.5">
+<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:22</span>
+<div class="flex-1 text-slate-600">
+<span class="font-medium text-slate-900">AI detection</span> triggered yellow-line breach alert on <span class="text-slate-800 font-medium">Platform 1</span>.
+</div>
+</div>
+<div class="flex items-start space-x-2.5">
+<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:18</span>
+<div class="flex-1 text-slate-600">
+<span class="font-medium text-slate-900">Automated audio warning</span> broadcasted to Platform 1 North quadrant.
+</div>
+</div>
+<div class="flex items-start space-x-2.5">
+<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:05</span>
+<div class="flex-1 text-slate-600">
+<span class="font-medium text-slate-900">Operator J. Doe</span> verified luggage clearance on <span class="text-slate-800 font-medium">Platform 5</span>.
+</div>
+</div>
+<div class="flex items-start space-x-2.5">
+<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">13:58</span>
+<div class="flex-1 text-slate-600">
+<span class="font-medium text-slate-900">Gate metering</span> automatically lifted at Platform 2 after density dropped to 64%.
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Live Precision Clock Script -->
+<script>
+    function updateClock() {
+      const clockEl = document.getElementById('utc-clock');
+      if (!clockEl) return;
+      const now = new Date();
+      const h = String(now.getUTCHours()).padStart(2, '0');
+      const m = String(now.getUTCMinutes()).padStart(2, '0');
+      const s = String(now.getUTCSeconds()).padStart(2, '0');
+      clockEl.textContent = `${h}:${m}:${s} UTC`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+
+
+</body></html>

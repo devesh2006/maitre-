@@ -1,584 +1,2331 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Metro Transit Command - Overview Dashboard</title>
-<!-- Material Symbols Outlined -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<!-- Google Fonts: Inter & JetBrains Mono -->
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<!-- Tailwind CSS v3 -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metro Command — Platform Safety & Operations System</title>
+  
+  <!-- Anti-flash script for dark mode -->
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('metro-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Google Fonts: Inter and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
     tailwind.config = {
-      darkMode: "class",
+      darkMode: 'class',
       theme: {
         extend: {
-          "colors": {
-            "surface-variant": "#e3e1ec",
-            "surface-container-highest": "#e3e1ec",
-            "tertiary-container": "#636d82",
-            "secondary-fixed-dim": "#bdc6e0",
-            "on-tertiary-fixed-variant": "#3d475a",
-            "surface-container-lowest": "#ffffff",
-            "on-primary-fixed": "#00174b",
-            "surface": "#fbf8ff",
-            "inverse-primary": "#b4c5ff",
-            "surface-container-high": "#e8e7f1",
-            "on-surface": "#1a1b22",
-            "on-secondary": "#ffffff",
-            "inverse-on-surface": "#f1effa",
-            "on-secondary-container": "#5a6278",
-            "outline": "#737686",
-            "primary": "#004ac6",
-            "secondary-container": "#d7dff9",
-            "on-primary-container": "#eeefff",
-            "surface-bright": "#fbf8ff",
-            "on-primary": "#ffffff",
-            "on-surface-variant": "#434655",
-            "on-secondary-fixed-variant": "#3e475b",
-            "error-container": "#ffdad6",
-            "on-secondary-fixed": "#121b2e",
-            "error": "#ba1a1a",
-            "on-error": "#ffffff",
-            "primary-fixed": "#dbe1ff",
-            "surface-container-low": "#f4f2fd",
-            "on-background": "#1a1b22",
-            "on-tertiary": "#ffffff",
-            "tertiary": "#4b5569",
-            "primary-container": "#2563eb",
-            "secondary-fixed": "#d9e2fc",
-            "on-error-container": "#93000a",
-            "surface-tint": "#0053db",
-            "tertiary-fixed-dim": "#bdc7de",
-            "background": "#fbf8ff",
-            "on-tertiary-container": "#ebefff",
-            "primary-fixed-dim": "#b4c5ff",
-            "on-primary-fixed-variant": "#003ea8",
-            "secondary": "#555e74",
-            "outline-variant": "#c3c6d7",
-            "surface-container": "#eeedf7",
-            "on-tertiary-fixed": "#111c2d",
-            "surface-dim": "#dad9e3",
-            "inverse-surface": "#2f3038",
-            "tertiary-fixed": "#d9e3fb"
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
           },
-          "borderRadius": {
-            "DEFAULT": "0.125rem",
-            "lg": "0.25rem",
-            "xl": "0.5rem",
-            "full": "0.75rem"
-          },
-          "spacing": {
-            "gutter-desktop": "1rem",
-            "margin": "1rem",
-            "space-xs": "0.25rem",
-            "space-lg": "1rem",
-            "space-xl": "1.5rem",
-            "margin-desktop": "1.5rem",
-            "space-md": "0.75rem",
-            "space-sm": "0.5rem",
-            "gutter": "0.75rem"
-          },
-          "fontFamily": {
-            "label-sm": ["Inter"],
-            "mono-data": ["JetBrains Mono"],
-            "body-md": ["Inter"],
-            "headline-lg": ["Inter"],
-            "headline-xl-mobile": ["Inter"],
-            "label-md": ["Inter"],
-            "body-sm": ["Inter"],
-            "headline-xl": ["Inter"],
-            "headline-sm": ["Inter"],
-            "body-lg": ["Inter"]
-          },
-          "fontSize": {
-            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
-            "mono-data": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
-            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
-            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
-            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
-            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
-            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+          colors: {
+            background: 'var(--background)',
+            surface: 'var(--surface)',
+            'surface-secondary': 'var(--surface-secondary)',
+            'surface-tertiary': 'var(--surface-tertiary)',
+            foreground: 'var(--foreground)',
+            'muted-foreground': 'var(--muted-foreground)',
+            primary: 'var(--primary)',
+            border: 'var(--border)',
+            'border-subtle': 'var(--border-subtle)',
+            critical: 'var(--critical)',
+            warning: 'var(--warning)',
+            success: 'var(--success)',
           }
         }
       }
-    }
+    };
   </script>
-<style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
-      font-size: 18px;
-      line-height: 1;
-      display: inline-block;
-      vertical-align: middle;
+
+  <style>
+    :root {
+      --background: #F8F9FB;
+      --surface: #FFFFFF;
+      --surface-secondary: #F3F5F8;
+      --surface-tertiary: #EBEEF2;
+      --foreground: #202B3C;
+      --muted-foreground: #687386;
+      --primary: #2457A7;
+      --primary-hover: #1D478A;
+      --border: #E6E9EE;
+      --border-subtle: #ECEFF3;
+      --critical: #C83D3D;
+      --critical-bg: #FDF3F3;
+      --critical-border: #F7D4D4;
+      --warning: #C58A28;
+      --warning-bg: #FDF8ED;
+      --warning-border: #F9E7C0;
+      --success: #27835B;
+      --success-bg: #F1F9F5;
+      --success-border: #C8E8D8;
+    }
+
+    .dark {
+      --background: #151A22;
+      --surface: #1D2530;
+      --surface-secondary: #242E3B;
+      --surface-tertiary: #2C3746;
+      --foreground: #EDF1F6;
+      --muted-foreground: #A1ADBC;
+      --primary: #78A7EA;
+      --primary-hover: #8EB7F0;
+      --border: #303A47;
+      --border-subtle: #27303C;
+      --critical: #E05252;
+      --critical-bg: #2A1C1F;
+      --critical-border: #4D262B;
+      --warning: #D99B38;
+      --warning-bg: #2B2418;
+      --warning-border: #4D3D22;
+      --success: #38A169;
+      --success-bg: #1B2921;
+      --success-border: #274533;
+    }
+
+    body, aside, header, main, div, table, tr, td, th, button, input, select {
+      transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(140, 150, 165, 0.25);
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(140, 150, 165, 0.45);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    .cctv-scanline {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+      background-size: 100% 4px;
+      pointer-events: none;
     }
   </style>
 </head>
-<body class="bg-surface-container-low text-on-surface font-body-md antialiased min-h-screen selection:bg-secondary-container selection:text-primary">
-<!-- SIDEBAR (Fixed 210px, Shared Component blueprint) -->
-<aside class="fixed top-14 left-0 h-[calc(100vh-56px)] w-[220px] z-30 bg-white border-r border-slate-200 flex flex-col justify-between p-3 select-none">
-<div class="space-y-1">
-<!-- Navigation Tabs -->
-<nav class="space-y-1">
-<!-- OVERVIEW (Active) -->
-<a class="bg-blue-50 text-blue-600 font-medium px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
-<div class="flex items-center space-x-2.5">
-<span class="material-symbols-outlined text-blue-600" style="font-variation-settings: &quot;FILL&quot; 1; font-size: 18px;">dashboard</span>
-<span>Overview</span>
-</div>
-<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-</a>
-<!-- Live Monitoring -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
-<div class="flex items-center space-x-2.5">
-<span class="material-symbols-outlined" style="font-size: 18px;">videocam</span>
-<span>Live Monitoring</span>
-</div>
-<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">4</span>
-</a>
-<!-- AI Detection -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
-<div class="flex items-center space-x-2.5">
-<span class="material-symbols-outlined" style="font-size: 18px;">neurology</span>
-<span>AI Detection</span>
-</div>
-<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 font-medium">99.4%</span>
-</a>
-<!-- Incidents -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
-<div class="flex items-center space-x-2.5">
-<span class="material-symbols-outlined" style="font-size: 18px;">warning</span>
-<span>Incidents</span>
-</div>
-<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 font-medium border border-amber-200">7</span>
-</a>
-<!-- Emergency Response -->
-<a class="text-red-600 hover:bg-red-50/60 px-3 py-2 rounded-lg flex items-center justify-between text-xs transition-colors" href="#">
-<div class="flex items-center space-x-2.5">
-<span class="material-symbols-outlined text-red-600" style="font-size: 18px;">emergency</span>
-<span class="font-medium">Emergency</span>
-</div>
-<span class="text-[10px] font-mono-data px-1.5 py-0.5 rounded bg-red-100 text-red-700 font-medium">1 Crit</span>
-</a>
-<div class="pt-4 pb-1.5 px-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400">OPERATIONS</div>
-<!-- Analytics -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
-<span class="material-symbols-outlined" style="font-size: 18px;">monitoring</span>
-<span>Analytics</span>
-</a>
-<!-- Camera Management -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
-<span class="material-symbols-outlined" style="font-size: 18px;">video_settings</span>
-<span>Camera Management</span>
-</a>
-<!-- Reports -->
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
-<span class="material-symbols-outlined" style="font-size: 18px;">assessment</span>
-<span>Reports</span>
-</a>
-</nav>
-</div>
-<!-- Bottom System Nav -->
-<div class="pt-3 border-t border-slate-200 space-y-1">
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
-<span class="material-symbols-outlined" style="font-size: 18px;">settings</span>
-<span>Settings</span>
-</a>
-<a class="text-slate-600 hover:text-slate-900 hover:bg-slate-50 px-3 py-2 rounded-lg flex items-center space-x-2.5 text-xs transition-colors" href="#">
-<span class="material-symbols-outlined" style="font-size: 18px;">help</span>
-<span>Diagnostics &amp; Help</span>
-</a>
-</div>
-</aside>
-<!-- TOP BAR (Fixed left 210px, Shared Component blueprint) -->
-<header class="fixed top-0 right-0 left-0 h-14 z-40 bg-white border-b border-slate-200 flex items-center justify-between px-6 select-none">
-<!-- Left: Metro Command Brand -->
-<div class="flex items-center space-x-3 w-[220px]">
-<div class="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg text-white flex-shrink-0 shadow-sm">
-<span class="material-symbols-outlined" style="font-size: 20px;">subway</span>
-</div>
-<div class="min-w-0">
-<div class="text-sm font-semibold text-slate-900 tracking-tight leading-tight">Metro Command</div>
-<div class="text-[11px] text-slate-500 tracking-normal leading-tight mt-0.5">Platform Safety &amp; Ops</div>
-</div>
-</div>
-<!-- Center: Clean Search Bar -->
-<div class="flex-1 max-w-md mx-6">
-<div class="relative flex items-center">
-<span class="material-symbols-outlined absolute left-3 text-slate-400 pointer-events-none" style="font-size: 18px;">search</span>
-<input class="h-9 w-full pl-9 pr-12 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-blue-600 focus:outline-none focus:ring-0 text-slate-900 placeholder:text-slate-400 transition-colors" placeholder="Search platform, train ID, camera, or incident..." type="text">
-<span class="absolute right-2.5 text-[10px] font-mono-data bg-white text-slate-500 border border-slate-200 px-1.5 py-0.5 rounded">⌘K</span>
-</div>
-</div>
-<!-- Right Controls: Notifications, Operator Profile, Emergency Dispatch -->
-<div class="flex items-center space-x-4">
-<!-- Notifications -->
-<button class="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-600 border border-slate-200 transition-colors" title="Notifications">
-<span class="material-symbols-outlined" style="font-size: 18px;">notifications</span>
-<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
-</button>
-<div class="h-5 w-[1px] bg-slate-200"></div>
-<!-- Operator Profile -->
-<div class="flex items-center space-x-2.5 px-2 py-1 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors">
-<div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 text-xs font-semibold">
-        JD
+<body class="bg-[var(--background)] text-[var(--foreground)] font-sans text-[13px] leading-normal antialiased min-h-screen selection:bg-blue-500/20 selection:text-blue-700">
+
+  <!-- ==================== SIDEBAR (214px Fixed) ==================== -->
+  <aside class="fixed top-0 left-0 bottom-0 w-[214px] z-30 bg-[var(--surface)] border-r border-[var(--border)] flex flex-col justify-between select-none">
+    <div class="flex flex-col h-full">
+      <!-- Brand Header -->
+      <div class="h-14 px-4 flex items-center border-b border-[var(--border)] gap-2.5">
+        <div class="w-6 h-6 rounded bg-[#2457A7] dark:bg-[#78A7EA] flex items-center justify-center text-white dark:text-[#151A22] shadow-xs flex-shrink-0">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="16" height="16" x="4" y="3" rx="2"></rect>
+            <path d="M4 11h16"></path>
+            <path d="M12 3v8"></path>
+            <path d="m8 19-2 3"></path>
+            <path d="m18 22-2-3"></path>
+            <circle cx="8" cy="15" r="1"></circle>
+            <circle cx="16" cy="15" r="1"></circle>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <div class="font-semibold text-[13px] tracking-tight text-[var(--foreground)] leading-tight">Metro Command</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] leading-tight mt-0.5">Platform Safety & Ops</div>
+        </div>
       </div>
-<div class="text-left">
-<div class="text-xs font-semibold text-slate-900 leading-tight">Operator J. Doe</div>
-<div class="text-[11px] text-slate-500 leading-tight mt-0.5">Station Hub A</div>
-</div>
-</div>
-<!-- Red Emergency Dispatch CTA -->
-<button class="h-9 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold tracking-wide flex items-center space-x-2 shadow-sm transition-colors active:scale-[0.99]">
-<span class="material-symbols-outlined" style="font-size: 18px;">gpp_maybe</span>
-<span>Emergency Dispatch</span>
-</button>
-</div>
-</header>
-<!-- MAIN CANVAS CONTAINER -->
-<main class="ml-[220px] pt-14 min-h-screen bg-slate-50 p-6">
-<!-- PAGE HEADER -->
-<div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-slate-200 mb-6 gap-3">
-<div>
-<h1 class="text-[24px] font-semibold text-slate-900 tracking-tight">Platform Safety Overview</h1>
-<p class="text-xs text-slate-500 mt-0.5">Monitor platform activity, detect potential risks and manage safety incidents in real time.</p>
-</div>
-<!-- Header Controls -->
-<div class="flex items-center space-x-2.5">
-<div class="inline-flex p-0.5 rounded-lg bg-slate-100 border border-slate-200 text-xs font-medium">
-<button class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-colors">Last 24 Hours</button>
-<button class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 transition-colors">Last 7 Days</button>
-<button class="px-3 py-1.5 rounded-md bg-white text-blue-600 font-semibold shadow-xs">Current Shift</button>
-</div>
-<button class="h-8 px-3 bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-medium rounded-lg flex items-center space-x-1.5 shadow-xs transition-colors">
-<span class="material-symbols-outlined text-slate-500" style="font-size: 16px;">download</span>
-<span>Export Incident Log</span>
-</button>
-</div>
-</div>
-<!-- ROW OF 6 KPI CARDS (Identical height, zero elevation, clean precision hairlines) -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-<!-- 1. Active Cameras -->
-<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
-<div class="flex items-center justify-between text-xs font-medium text-slate-500">
-<span>Active Cameras</span>
-<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-</div>
-<div class="my-2">
-<div class="text-2xl font-bold text-slate-900 tracking-tight">428 <span class="text-sm font-normal text-slate-400">/ 430</span></div>
-</div>
-<div class="flex items-center space-x-1.5 text-xs text-emerald-700 font-medium">
-<span class="material-symbols-outlined text-emerald-600" style="font-size: 14px;">check_circle</span>
-<span>99.5% Operational</span>
-</div>
-</div>
-<!-- 2. Active Incidents -->
-<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
-<div class="flex items-center justify-between text-xs font-medium text-slate-500">
-<span>Active Incidents</span>
-<span class="w-2 h-2 rounded-full bg-amber-500"></span>
-</div>
-<div class="my-2">
-<div class="text-2xl font-bold text-slate-900 tracking-tight">7 Active</div>
-</div>
-<div class="text-xs text-slate-500">
-      3 In Review · 4 Dispatched
+
+      <!-- Navigation Links -->
+      <div class="flex-1 overflow-y-auto px-2.5 py-3 space-y-4">
+        <!-- OVERVIEW -->
+        <div>
+          <div class="px-2 pb-1 text-[10px] font-medium tracking-wide text-[var(--muted-foreground)] uppercase">Overview</div>
+          <nav class="space-y-0.5">
+            <button onclick="switchTab('overview')" data-nav="overview" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors font-medium bg-[var(--surface-secondary)] text-[var(--foreground)] border-l-2 border-[#2457A7] dark:border-[#78A7EA]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#2457A7] dark:text-[#78A7EA]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+                <span>Overview</span>
+              </div>
+            </button>
+          </nav>
+        </div>
+
+        <!-- MONITORING -->
+        <div>
+          <div class="px-2 pb-1 text-[10px] font-medium tracking-wide text-[var(--muted-foreground)] uppercase">Monitoring</div>
+          <nav class="space-y-0.5">
+            <button onclick="switchTab('monitoring')" data-nav="monitoring" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2"/></svg>
+                <span>Live Monitoring</span>
+              </div>
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-[var(--surface-secondary)] text-[var(--muted-foreground)]">4</span>
+            </button>
+            <button onclick="switchTab('detection')" data-nav="detection" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>
+                <span>AI Detection</span>
+              </div>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--surface-secondary)] text-[var(--muted-foreground)]">99.4%</span>
+            </button>
+            <button onclick="switchTab('incidents')" data-nav="incidents" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Incidents</span>
+              </div>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]">7</span>
+            </button>
+            <button onclick="switchTab('emergency')" data-nav="emergency" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--critical)] hover:bg-[var(--critical-bg)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span class="font-medium">Emergency Response</span>
+              </div>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-[var(--critical-bg)] text-[var(--critical)] font-medium">1 Crit</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- INSIGHTS -->
+        <div>
+          <div class="px-2 pb-1 text-[10px] font-medium tracking-wide text-[var(--muted-foreground)] uppercase">Insights</div>
+          <nav class="space-y-0.5">
+            <button onclick="switchTab('analytics')" data-nav="analytics" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Analytics</span>
+              </div>
+            </button>
+            <button onclick="switchTab('cameras')" data-nav="cameras" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                <span>Camera Management</span>
+              </div>
+            </button>
+            <button onclick="switchTab('reports')" data-nav="reports" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                <span>Reports</span>
+              </div>
+            </button>
+          </nav>
+        </div>
+
+        <!-- SYSTEM -->
+        <div>
+          <div class="px-2 pb-1 text-[10px] font-medium tracking-wide text-[var(--muted-foreground)] uppercase">System</div>
+          <nav class="space-y-0.5">
+            <button onclick="switchTab('settings')" data-nav="settings" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+              </div>
+            </button>
+            <button onclick="switchTab('diagnostics')" data-nav="diagnostics" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Diagnostics</span>
+              </div>
+            </button>
+            <button onclick="switchTab('help')" data-nav="help" class="nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Help Desk</span>
+              </div>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Bottom User Profile Card -->
+      <div class="p-3 border-t border-[var(--border)] bg-[var(--surface)]">
+        <div class="flex items-center gap-2.5 p-1 rounded hover:bg-[var(--surface-secondary)] cursor-pointer transition-colors" onclick="switchTab('settings')">
+          <div class="w-6 h-6 rounded bg-[var(--surface-secondary)] border border-[var(--border)] flex items-center justify-center text-[var(--foreground)] font-medium text-[10px] flex-shrink-0">
+            JD
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-[12px] font-medium text-[var(--foreground)] truncate leading-tight">Operator J. Doe</div>
+            <div class="flex items-center gap-1.5 text-[10px] text-[var(--muted-foreground)] truncate leading-tight mt-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
+              <span>Rajiv Chowk OCC</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-<!-- 3. Critical Alerts (Accent Border) -->
-<div class="bg-white border-l-4 border-l-red-500 border-y border-r border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
-<div class="flex items-center justify-between text-xs font-semibold text-red-600">
-<span>Critical Alerts</span>
-<span class="px-1.5 py-0.2 rounded text-[10px] font-mono-data bg-red-100 text-red-700 uppercase">Immediate</span>
-</div>
-<div class="my-2">
-<div class="text-2xl font-bold text-red-600 tracking-tight">1 Immediate</div>
-</div>
-<div class="text-xs font-medium text-red-600 truncate" title="Platform 3 Guideway Track">
-      Platform 3 Guideway Track
+  </aside>
+
+  <!-- ==================== TOP NAVIGATION ==================== -->
+  <header class="fixed top-0 right-0 left-[214px] h-14 z-20 bg-[var(--surface)] border-b border-[var(--border)] flex items-center justify-between px-6 select-none">
+    <!-- Search Bar -->
+    <div class="flex-1 max-w-sm">
+      <div class="relative flex items-center cursor-pointer" onclick="openSearchModal()">
+        <svg class="w-3.5 h-3.5 absolute left-3 text-[var(--muted-foreground)] pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input readonly type="text" placeholder="Search lines, stations, cameras..." class="h-8 w-full pl-8 pr-12 text-xs bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded cursor-pointer text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none">
+        <span class="absolute right-2 text-[10px] font-mono text-[var(--muted-foreground)] border border-[var(--border)] px-1 py-0.2 rounded bg-[var(--surface)]">⌘K</span>
+      </div>
     </div>
-</div>
-<!-- 4. AI Detection Accuracy -->
-<div class="bg-white border border-slate-200 rounded-lg p-4 flex flex-col justify-between shadow-xs">
-<div class="flex items-center justify-between text-xs font-medium text-slate-500">
-<span>AI Detection Accuracy</span>
-<span class="material-symbols-outlined text-blue-600" style="font-size: 16px;">auto_graph</span>
-</div>
-<div class="my-2">
-<div class="text-2xl font-bold text-slate-900 tracking-tight">99.4%</div>
-</div>
-<div class="text-xs text-slate-500 font-medium">
-      Target: 92.0% <span class="text-emerald-600 font-semibold">(+7.4%)</span>
-</div>
-</div>
-</div>
-<!-- MAIN TWO-COLUMN DASHBOARD GRID (65% / 35%) -->
-<div class="space-y-6">
-<!-- FULL-WIDTH Incident Log Table Card -->
-<div class="bg-white border border-slate-200 rounded-lg shadow-xs overflow-hidden">
-<!-- Table Header -->
-<div class="px-5 py-3.5 border-b border-slate-200 flex items-center justify-between">
-<div class="flex items-center space-x-2.5">
-<span class="text-sm font-semibold text-slate-900">Active &amp; Recent Incident Log</span>
-<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-200">7 pending</span>
-</div>
-<button class="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors flex items-center space-x-1">
-<span>View All Incidents</span>
-<span class="material-symbols-outlined" style="font-size: 14px;">arrow_forward</span>
-</button>
-</div>
-<!-- Table -->
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-slate-50/75 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-<th class="py-2.5 px-4">Incident ID</th>
-<th class="py-2.5 px-4">Classification</th>
-<th class="py-2.5 px-4">Platform</th>
-<th class="py-2.5 px-4">Severity</th>
-<th class="py-2.5 px-4">Time</th>
-<th class="py-2.5 px-4 text-right">Status</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-slate-200 text-xs">
-<!-- Row 1: Critical -->
-<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
-<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8942</td>
-<td class="py-3 px-4 font-medium text-slate-900">
-<div class="flex items-center space-x-2">
-<span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"></span>
-<span>Track Intrusion</span>
-</div>
-</td>
-<td class="py-3 px-4 text-slate-600 font-medium">Platform 3 (South)</td>
-<td class="py-3 px-4">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-red-50 text-red-700 border border-red-200">
-                CRITICAL
-              </span>
-</td>
-<td class="py-3 px-4 font-mono-data text-slate-500">42s ago</td>
-<td class="py-3 px-4 text-right">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200">
-                Dispatched
-              </span>
-</td>
-</tr>
-<!-- Row 2: Warning -->
-<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
-<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8941</td>
-<td class="py-3 px-4 font-medium text-slate-900">
-<div class="flex items-center space-x-2">
-<span class="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
-<span>Yellow-Line Crossing</span>
-</div>
-</td>
-<td class="py-3 px-4 text-slate-600 font-medium">Platform 1 (North)</td>
-<td class="py-3 px-4">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                WARNING
-              </span>
-</td>
-<td class="py-3 px-4 font-mono-data text-slate-500">2m ago</td>
-<td class="py-3 px-4 text-right">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                Audio Warning
-              </span>
-</td>
-</tr>
-<!-- Row 3: Medium -->
-<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
-<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8940</td>
-<td class="py-3 px-4 font-medium text-slate-900">
-<div class="flex items-center space-x-2">
-<span class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></span>
-<span>Unattended Luggage</span>
-</div>
-</td>
-<td class="py-3 px-4 text-slate-600 font-medium">Platform 5 (Center)</td>
-<td class="py-3 px-4">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-                MEDIUM
-              </span>
-</td>
-<td class="py-3 px-4 font-mono-data text-slate-500">8m ago</td>
-<td class="py-3 px-4 text-right">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
-                Investigating
-              </span>
-</td>
-</tr>
-<!-- Row 4: Caution -->
-<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
-<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8939</td>
-<td class="py-3 px-4 font-medium text-slate-900">
-<div class="flex items-center space-x-2">
-<span class="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0"></span>
-<span>Crowd Surge &gt; 85%</span>
-</div>
-</td>
-<td class="py-3 px-4 text-slate-600 font-medium">Platform 2 (Concourse)</td>
-<td class="py-3 px-4">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                CAUTION
-              </span>
-</td>
-<td class="py-3 px-4 font-mono-data text-slate-500">14m ago</td>
-<td class="py-3 px-4 text-right">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
-                Gate Metering
-              </span>
-</td>
-</tr>
-<!-- Row 5: Nominal -->
-<tr class="hover:bg-slate-50/80 transition-colors h-[52px]">
-<td class="py-3 px-4 font-mono-data font-semibold text-blue-600">INC-8938</td>
-<td class="py-3 px-4 font-medium text-slate-900">
-<div class="flex items-center space-x-2">
-<span class="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
-<span>Wheelchair Assistance</span>
-</div>
-</td>
-<td class="py-3 px-4 text-slate-600 font-medium">Platform 4 (Elevator A)</td>
-<td class="py-3 px-4">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                NOMINAL
-              </span>
-</td>
-<td class="py-3 px-4 font-mono-data text-slate-500">22m ago</td>
-<td class="py-3 px-4 text-right">
-<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                Resolved
-              </span>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- Table Footer -->
-<div class="px-5 py-3 border-t border-slate-200 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-<span>Showing 5 of 7 active incidents</span>
-<a class="font-medium text-blue-600 hover:text-blue-700 flex items-center space-x-1" href="#">
-<span>View All Incidents</span>
-<span>→</span>
-</a>
-</div>
-</div>
 
-<!-- 3-COLUMN HORIZONTAL GRID BELOW TABLE -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- 1. Critical Alerts Action Card -->
-<div class="bg-white border-2 border-red-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
-<div>
-<div class="flex items-center justify-between pb-3 border-b border-red-100">
-<div class="flex items-center space-x-2">
-<span class="material-symbols-outlined text-red-600" style="font-size: 18px;">error</span>
-<span class="text-xs font-bold text-red-700 uppercase tracking-wide">Immediate Action Required</span>
-</div>
-<span class="text-[11px] font-mono-data text-red-600 font-semibold">42s ago</span>
-</div>
-<div class="mt-3">
-<div class="text-sm font-semibold text-slate-900">Platform 3 (Track 2A)</div>
-<div class="text-xs text-red-600 font-medium mt-0.5">Guideway Intrusion Detected · Speed Restricted 15km/h</div>
-<p class="text-xs text-slate-500 mt-2">Officer J. Cooper dispatched to south perimeter gate. Sensors confirm unauthorized track presence.</p>
-</div>
-</div>
-<div class="mt-4 flex items-center space-x-2">
-<button class="flex-1 h-8 bg-red-600 hover:bg-red-700 text-white rounded text-xs font-semibold tracking-wide transition-colors flex items-center justify-center space-x-1">
-<span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
-<span>Interlock Guideway</span>
-</button>
-<button class="px-3 h-8 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded text-xs font-medium transition-colors">
-Acknowledge
-</button>
-</div>
-</div>
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-3 ml-4">
+      <div class="hidden sm:flex items-center gap-1.5 text-[11px] text-[var(--muted-foreground)] pr-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
+        <span>OCC Sync · 14ms</span>
+      </div>
 
-<!-- 2. Camera Operational Status Card -->
-<div class="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
-<div>
-<div class="flex items-center justify-between pb-2.5 border-b border-slate-200 mb-3">
-<div class="text-xs font-semibold text-slate-900">Camera Operational Status</div>
-<a class="text-[11px] font-medium text-blue-600 hover:text-blue-700" href="#">Manage Cameras →</a>
-</div>
-<div class="flex items-center justify-between text-xs mb-1.5">
-<span class="font-medium text-slate-700">428 Operational (99.5%)</span>
-<span class="text-[11px] font-medium text-amber-700">2 Maintenance</span>
-</div>
-<div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden flex mb-3">
-<div class="bg-emerald-500 h-2 rounded-l-full" style="width: 99.5%"></div>
-<div class="bg-amber-400 h-2 rounded-r-full" style="width: 0.5%"></div>
-</div>
-<div class="space-y-1.5 pt-1 text-[11px]">
-<div class="flex items-center justify-between p-1.5 bg-slate-50 rounded border border-slate-100">
-<span class="text-slate-700 font-mono-data font-medium">Cam #104 · Plat 2 (West)</span>
-<span class="text-amber-700 font-medium">Lens Occlusion</span>
-</div>
-<div class="flex items-center justify-between p-1.5 bg-slate-50 rounded border border-slate-100">
-<span class="text-slate-700 font-mono-data font-medium">Cam #219 · Hub Concourse</span>
-<span class="text-amber-700 font-medium">Signal Low (4fps)</span>
-</div>
-</div>
-</div>
-</div>
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" onclick="toggleTheme()" class="w-7 h-7 flex items-center justify-center rounded border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-secondary)] transition-colors" title="Toggle theme" aria-label="Toggle theme">
+        <svg id="theme-sun" class="w-3.5 h-3.5 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+        </svg>
+        <svg id="theme-moon" class="w-3.5 h-3.5 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+      </button>
 
-<!-- 3. Recent Safety Activity (Live Feed) -->
-<div class="bg-white border border-slate-200 rounded-lg p-4 shadow-xs flex flex-col justify-between">
-<div>
-<div class="flex items-center justify-between pb-2.5 border-b border-slate-200 mb-3">
-<div class="text-xs font-semibold text-slate-900">Recent Safety Activity</div>
-<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live Stream Active"></span>
-</div>
-<div class="space-y-2.5 text-xs">
-<div class="flex items-start space-x-2.5">
-<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:22</span>
-<div class="flex-1 text-slate-600">
-<span class="font-medium text-slate-900">AI detection</span> triggered yellow-line breach alert on <span class="text-slate-800 font-medium">Platform 1</span>.
-</div>
-</div>
-<div class="flex items-start space-x-2.5">
-<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:18</span>
-<div class="flex-1 text-slate-600">
-<span class="font-medium text-slate-900">Automated audio warning</span> broadcasted to Platform 1 North quadrant.
-</div>
-</div>
-<div class="flex items-start space-x-2.5">
-<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">14:05</span>
-<div class="flex-1 text-slate-600">
-<span class="font-medium text-slate-900">Operator J. Doe</span> verified luggage clearance on <span class="text-slate-800 font-medium">Platform 5</span>.
-</div>
-</div>
-<div class="flex items-start space-x-2.5">
-<span class="font-mono-data text-[10px] text-slate-400 mt-0.5">13:58</span>
-<div class="flex-1 text-slate-600">
-<span class="font-medium text-slate-900">Gate metering</span> automatically lifted at Platform 2 after density dropped to 64%.
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</main>
-<!-- Live Precision Clock Script -->
-<script>
-    function updateClock() {
-      const clockEl = document.getElementById('utc-clock');
-      if (!clockEl) return;
-      const now = new Date();
-      const h = String(now.getUTCHours()).padStart(2, '0');
-      const m = String(now.getUTCMinutes()).padStart(2, '0');
-      const s = String(now.getUTCSeconds()).padStart(2, '0');
-      clockEl.textContent = `${h}:${m}:${s} UTC`;
+      <!-- Notifications -->
+      <div class="relative">
+        <button onclick="toggleNotifications()" class="relative w-7 h-7 flex items-center justify-center rounded border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-secondary)] transition-colors" title="Notifications">
+          <svg class="w-3.5 h-3.5 text-[var(--muted-foreground)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+          </svg>
+          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-[var(--critical)] rounded-full"></span>
+        </button>
+
+        <div id="notifications-popover" class="hidden absolute right-0 mt-2 w-80 bg-[var(--surface)] border border-[var(--border)] rounded shadow-lg z-50 p-2 text-xs">
+          <div class="flex items-center justify-between px-2 py-1.5 border-b border-[var(--border)]">
+            <span class="font-medium text-[var(--foreground)]">Operations alerts</span>
+            <span class="text-[10px] text-[var(--primary)] cursor-pointer hover:underline" onclick="clearNotifications()">Mark all read</span>
+          </div>
+          <div class="py-1 divide-y divide-[var(--border-subtle)] max-h-60 overflow-y-auto">
+            <div class="p-2 hover:bg-[var(--surface-secondary)] rounded cursor-pointer" onclick="switchTab('emergency')">
+              <div class="flex items-center justify-between text-[11px] font-medium text-[var(--critical)]">
+                <span>Guideway Intrusion</span>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">42s ago</span>
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">Rajiv Chowk Plat 3 Down-Line track envelope breach flagged by CAM-103.</div>
+            </div>
+            <div class="p-2 hover:bg-[var(--surface-secondary)] rounded cursor-pointer" onclick="switchTab('incidents')">
+              <div class="flex items-center justify-between text-[11px] font-medium text-[var(--warning)]">
+                <span>Yellow Line Warning</span>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">2m ago</span>
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">Kashmere Gate Plat 1 automated PA safety chime broadcasted.</div>
+            </div>
+            <div class="p-2 hover:bg-[var(--surface-secondary)] rounded cursor-pointer" onclick="switchTab('cameras')">
+              <div class="flex items-center justify-between text-[11px] font-medium text-[var(--foreground)]">
+                <span>Camera Maintenance</span>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">15m ago</span>
+              </div>
+              <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">CAM-104 lens occlusion reported. Auto-ticket SCR-904 generated.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Dispatch Action -->
+      <button onclick="triggerEmergencyDispatchModal()" class="h-7 px-3 bg-[#C83D3D] hover:bg-[#B33434] text-white rounded text-xs font-medium flex items-center space-x-1.5 transition-colors">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Emergency Dispatch</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="ml-[214px] pt-14 min-h-screen bg-[var(--background)] p-6 space-y-6">
+
+    <!-- ==================== VIEW 1: OVERVIEW DASHBOARD ==================== -->
+    <section id="view-overview" class="tab-content active space-y-6">
+      <!-- Page Header -->
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Platform Safety Overview</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Monitor metro platform safety, identify potential threats and coordinate incident response.</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="inline-flex rounded border border-[var(--border)] bg-[var(--surface)] text-xs p-0.5">
+            <button class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Last 24h</button>
+            <button class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Last 7d</button>
+            <button class="px-2.5 py-0.5 rounded bg-[var(--surface-secondary)] text-[var(--foreground)] font-medium">Current Shift</button>
+          </div>
+          <button onclick="exportCSVReport()" class="h-6 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-secondary)] text-[11px] font-medium rounded flex items-center space-x-1 transition-colors">
+            <svg class="w-3 h-3 text-[var(--muted-foreground)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export CSV</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. Refined Metric Strip (Swiss Information Design — Not 4 Identical Boxed Cards) -->
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Metric 1: Cameras -->
+        <div class="p-4 flex flex-col justify-between space-y-1">
+          <div class="flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+            <span>Active cameras</span>
+            <span class="inline-flex items-center text-[11px] font-medium text-[var(--success)]">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)] mr-1.5"></span>
+              99.5%
+            </span>
+          </div>
+          <div class="text-xl font-semibold text-[var(--foreground)] tracking-tight">
+            428 <span class="text-xs font-normal text-[var(--muted-foreground)]">/ 430 optical feeds</span>
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">
+            Transmitting nominal 30 FPS telemetry
+          </div>
+        </div>
+
+        <!-- Metric 2: Incidents -->
+        <div class="p-4 flex flex-col justify-between space-y-1">
+          <div class="flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+            <span>Active incidents</span>
+            <span class="inline-flex items-center text-[11px] font-medium text-[var(--warning)]">
+              <span class="w-1.5 h-1.5 rounded-full bg-[var(--warning)] mr-1.5"></span>
+              7 pending
+            </span>
+          </div>
+          <div class="text-xl font-semibold text-[var(--foreground)] tracking-tight">
+            7 active
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">
+            3 under investigation · 4 dispatched
+          </div>
+        </div>
+
+        <!-- Metric 3: Critical Alerts -->
+        <div class="p-4 flex flex-col justify-between space-y-1">
+          <div class="flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+            <span>Critical alerts</span>
+            <span class="text-[10px] font-medium text-[var(--critical)] uppercase tracking-wide">Immediate</span>
+          </div>
+          <div class="text-xl font-semibold text-[var(--critical)] tracking-tight">
+            1 immediate
+          </div>
+          <div class="text-[11px] text-[var(--critical)] truncate">
+            Rajiv Chowk Plat 3 (Down-Line)
+          </div>
+        </div>
+
+        <!-- Metric 4: AI Accuracy -->
+        <div class="p-4 flex flex-col justify-between space-y-1">
+          <div class="flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+            <span>AI detection accuracy</span>
+            <span class="text-[11px] font-medium text-[var(--success)]">+7.4% vs SLA</span>
+          </div>
+          <div class="text-xl font-semibold text-[var(--foreground)] tracking-tight">
+            99.4%
+          </div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">
+            YOLO-Rail v4.2 · 0.3% false positive rate
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Active & Recent Incident Log (Full Available Content Width) -->
+      <div class="w-full bg-[var(--surface)] border border-[var(--border)] rounded overflow-hidden">
+        <!-- Table Header & Controls -->
+        <div class="p-3 border-b border-[var(--border)] flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center space-x-2">
+            <span class="font-medium text-xs text-[var(--foreground)]">Active & Recent Incident Log</span>
+            <span class="text-[11px] text-[var(--muted-foreground)]">· Real-time platform alerts</span>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <div class="inline-flex rounded border border-[var(--border)] bg-[var(--surface-secondary)] text-[11px] p-0.5">
+              <button onclick="filterOverviewSeverity('ALL')" class="severity-pill active px-2.5 py-0.5 rounded font-medium bg-[var(--surface)] text-[var(--foreground)] shadow-xs">All</button>
+              <button onclick="filterOverviewSeverity('CRITICAL')" class="severity-pill px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Critical</button>
+              <button onclick="filterOverviewSeverity('WARNING')" class="severity-pill px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Warning</button>
+              <button onclick="filterOverviewSeverity('CAUTION')" class="severity-pill px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">Caution</button>
+            </div>
+            <button onclick="switchTab('incidents')" class="text-xs text-[var(--primary)] hover:underline flex items-center gap-0.5 font-medium pl-1">
+              <span>View all incidents</span>
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--surface-secondary)] border-b border-[var(--border)] text-[11px] font-medium text-[var(--muted-foreground)] select-none">
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('id')">Incident ID ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('classification')">Classification ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('platform')">Station & Platform ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('severity')">Severity ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('time')">Detection Time ↕</th>
+                <th class="py-2.5 px-4 text-right cursor-pointer hover:text-[var(--foreground)]" onclick="sortOverviewTable('status')">Status ↕</th>
+              </tr>
+            </thead>
+            <tbody id="overview-incidents-tbody" class="divide-y divide-[var(--border-subtle)] text-xs">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+        <div class="px-4 py-2 border-t border-[var(--border)] bg-[var(--surface-secondary)]/50 flex items-center justify-between text-[11px] text-[var(--muted-foreground)]">
+          <span id="overview-table-count">Showing 5 of 7 active incidents</span>
+          <span class="text-[11px]">Click an incident row to inspect SCR timeline and operator actions</span>
+        </div>
+      </div>
+
+      <!-- 3. Operational Overview Section (3 Naturally Distinct Horizontal Cards) -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Operational overview</h2>
+          <span class="text-[11px] text-[var(--muted-foreground)]">Platform infrastructure state and immediate actions</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Card 1: Critical Alerts (Action Banner) -->
+          <div class="bg-[var(--surface)] border border-[var(--border)] border-l-[3px] border-l-[var(--critical)] rounded p-4 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
+                <div class="flex items-center space-x-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--critical)]"></span>
+                  <span class="text-xs font-semibold text-[var(--critical)]">Immediate Action Required</span>
+                </div>
+                <span class="text-[10px] font-mono text-[var(--muted-foreground)]">42s ago</span>
+              </div>
+              <div class="mt-2.5">
+                <div class="text-[13px] font-semibold text-[var(--foreground)]">Rajiv Chowk Plat 3 (Down-Line)</div>
+                <div class="text-xs text-[var(--critical)] font-medium mt-0.5">Guideway Intrusion Detected · Speed Restricted 15km/h</div>
+                <p class="text-xs text-[var(--muted-foreground)] mt-1.5 leading-relaxed">
+                  Optical array CAM-103 confirmed human silhouette in track envelope (Chainage 14+220). Station Guard Unit B dispatched to perimeter gate.
+                </p>
+              </div>
+            </div>
+            <div class="mt-3 pt-3 border-t border-[var(--border-subtle)] flex items-center space-x-2">
+              <button onclick="simulateInterlockAction()" class="flex-1 h-7 bg-[var(--critical)] hover:opacity-90 text-white rounded text-xs font-medium transition-opacity flex items-center justify-center space-x-1">
+                <span>Interlock Guideway</span>
+              </button>
+              <button onclick="acknowledgeAlert('INC-8942')" class="px-3 h-7 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--foreground)] rounded text-xs font-medium transition-colors">
+                Acknowledge
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Camera Operational Status (Telemetry Breakdown) -->
+          <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)] mb-2.5">
+                <span class="text-xs font-medium text-[var(--foreground)]">Camera operational status</span>
+                <button onclick="switchTab('cameras')" class="text-[11px] text-[var(--primary)] hover:underline">Manage →</button>
+              </div>
+              <div class="flex items-center justify-between text-xs mb-1.5">
+                <span class="font-medium text-[var(--foreground)]">428 operational (99.5%)</span>
+                <span class="text-[11px] text-[var(--warning)] font-medium">2 maintenance</span>
+              </div>
+              <div class="w-full bg-[var(--surface-secondary)] rounded h-1.5 overflow-hidden flex mb-3">
+                <div class="bg-[var(--success)] h-1.5" style="width: 99.5%"></div>
+                <div class="bg-[var(--warning)] h-1.5" style="width: 0.5%"></div>
+              </div>
+              <div class="space-y-1.5 text-[11px]">
+                <div class="flex items-center justify-between p-1.5 bg-[var(--surface-secondary)] rounded">
+                  <span class="text-[var(--foreground)] font-mono">CAM-104 · Rajiv Chowk Plat 2</span>
+                  <span class="text-[var(--warning)] font-medium">Lens Occlusion</span>
+                </div>
+                <div class="flex items-center justify-between p-1.5 bg-[var(--surface-secondary)] rounded">
+                  <span class="text-[var(--foreground)] font-mono">CAM-219 · Kashmere Gate</span>
+                  <span class="text-[var(--warning)] font-medium">Low Signal (4fps)</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--muted-foreground)] flex items-center justify-between">
+              <span>Sensor latency</span>
+              <span class="font-mono text-[var(--foreground)]">14.2 ms avg</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Recent Safety Activity (Editorial Chronological Log) -->
+          <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between h-full">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)] mb-2.5">
+                <span class="text-xs font-medium text-[var(--foreground)]">Recent safety activity</span>
+                <div class="flex items-center space-x-1.5 text-[10px] text-[var(--success)]">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[var(--success)]"></span>
+                  <span>OCC Synced</span>
+                </div>
+              </div>
+              <div id="overview-activity-feed" class="space-y-2 text-xs">
+                <!-- Dynamically rendered activity items -->
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-[var(--border-subtle)] text-[11px] text-[var(--muted-foreground)] flex items-center justify-between">
+              <span>Audit logging active</span>
+              <span class="font-mono text-[var(--foreground)]">All stations synced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Safety Analytics Section (Full Width) -->
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Safety analytics</h2>
+            <p class="text-[11px] text-[var(--muted-foreground)]">Incident frequency trends and hazard classification distribution</p>
+          </div>
+          <button onclick="switchTab('analytics')" class="text-xs text-[var(--primary)] hover:underline flex items-center gap-0.5 font-medium">
+            <span>Detailed analytics</span>
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Chart 1: Hourly Trends -->
+          <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between">
+            <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)] mb-3">
+              <span class="text-xs font-medium text-[var(--foreground)]">Incident frequency by hour (Today)</span>
+              <span class="text-[10px] font-mono text-[var(--muted-foreground)]">Peak: 14:00 (Rush hour)</span>
+            </div>
+            <!-- Clean SVG Bar Chart with subtle baseline -->
+            <div class="h-36 flex items-end justify-between gap-2 px-2 pt-2 border-b border-[var(--border-subtle)]">
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/25 dark:bg-[#78A7EA]/25 rounded-t" style="height: 20%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">08h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/45 dark:bg-[#78A7EA]/45 rounded-t" style="height: 45%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">09h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/25 dark:bg-[#78A7EA]/25 rounded-t" style="height: 25%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">10h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/15 dark:bg-[#78A7EA]/15 rounded-t" style="height: 15%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">11h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/35 dark:bg-[#78A7EA]/35 rounded-t" style="height: 35%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">12h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/45 dark:bg-[#78A7EA]/45 rounded-t" style="height: 50%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">13h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#C83D3D] dark:bg-[#E05252] rounded-t" style="height: 90%"></div>
+                <span class="text-[9px] font-mono font-medium text-[var(--critical)]">14h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/65 dark:bg-[#78A7EA]/65 rounded-t" style="height: 65%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">15h</span>
+              </div>
+              <div class="flex-1 flex flex-col items-center gap-1.5">
+                <div class="w-full bg-[#2457A7]/30 dark:bg-[#78A7EA]/30 rounded-t" style="height: 30%"></div>
+                <span class="text-[9px] font-mono text-[var(--muted-foreground)]">16h</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 2: Category Breakdown -->
+          <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between">
+            <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)] mb-3">
+              <span class="text-xs font-medium text-[var(--foreground)]">Hazard classification distribution</span>
+              <span class="text-[10px] font-mono text-[var(--muted-foreground)]">Total: 48 Events</span>
+            </div>
+            <div class="space-y-2">
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-[var(--foreground)]">Yellow-line crossings</span>
+                  <span class="font-mono text-[var(--muted-foreground)]">26 (54%)</span>
+                </div>
+                <div class="w-full bg-[var(--surface-secondary)] rounded h-1 overflow-hidden">
+                  <div class="bg-[var(--warning)] h-1" style="width: 54%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-[var(--foreground)]">Crowd density & gate bottlenecks</span>
+                  <span class="font-mono text-[var(--muted-foreground)]">11 (23%)</span>
+                </div>
+                <div class="w-full bg-[var(--surface-secondary)] rounded h-1 overflow-hidden">
+                  <div class="bg-[#2457A7] dark:bg-[#78A7EA] h-1" style="width: 23%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-[var(--foreground)]">Unattended luggage</span>
+                  <span class="font-mono text-[var(--muted-foreground)]">6 (12%)</span>
+                </div>
+                <div class="w-full bg-[var(--surface-secondary)] rounded h-1 overflow-hidden">
+                  <div class="bg-indigo-500 h-1" style="width: 12%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-[var(--foreground)]">Guideway / track intrusion</span>
+                  <span class="font-mono text-[var(--critical)] font-medium">3 (6%)</span>
+                </div>
+                <div class="w-full bg-[var(--surface-secondary)] rounded h-1 overflow-hidden">
+                  <div class="bg-[var(--critical)] h-1" style="width: 6%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1">
+                  <span class="text-[var(--foreground)]">Accidental falls & slips</span>
+                  <span class="font-mono text-[var(--muted-foreground)]">2 (4%)</span>
+                </div>
+                <div class="w-full bg-[var(--surface-secondary)] rounded h-1 overflow-hidden">
+                  <div class="bg-[var(--success)] h-1" style="width: 4%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: LIVE MONITORING ==================== -->
+    <section id="view-monitoring" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">CCTV Surveillance Array</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Control room optical array with real-time AI bounding box overlays and anomaly detection.</p>
+        </div>
+        
+        <div class="flex items-center space-x-2">
+          <select id="monitoring-platform-filter" onchange="renderCCTVGrid()" class="h-7 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] rounded text-xs focus:outline-none">
+            <option value="ALL">All Stations & Lines</option>
+            <option value="Rajiv Chowk">Rajiv Chowk Interchange</option>
+            <option value="Kashmere Gate">Kashmere Gate Hub</option>
+            <option value="Central Secretariat">Central Secretariat</option>
+            <option value="Barakhamba Road">Barakhamba Road</option>
+          </select>
+
+          <div class="inline-flex rounded border border-[var(--border)] bg-[var(--surface-secondary)] text-xs p-0.5">
+            <button onclick="setCCTVGridMode('2x2')" id="grid-btn-2x2" class="cctv-grid-btn active px-2.5 py-0.5 rounded font-medium bg-[var(--surface)] text-[var(--foreground)] shadow-xs">2×2</button>
+            <button onclick="setCCTVGridMode('3x2')" id="grid-btn-3x2" class="cctv-grid-btn px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">3×2</button>
+            <button onclick="setCCTVGridMode('4x4')" id="grid-btn-4x4" class="cctv-grid-btn px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">4×4</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Surveillance Canvas Notice -->
+      <div class="px-3 py-1.5 bg-[var(--surface-secondary)] border border-[var(--border)] rounded flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+        <div class="flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-[var(--primary)]"></span>
+          <span>SIMULATED CCTV FEEDS · Edge model YOLO-Rail v4.2 active · Zero physical camera interference</span>
+        </div>
+        <div class="font-mono text-[11px] text-[var(--foreground)]">30.0 FPS · 14ms Latency · Encrypted RTSP</div>
+      </div>
+
+      <!-- Camera Grid Container (Dedicated Surveillance Viewport) -->
+      <div id="cctv-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: AI DETECTION ==================== -->
+    <section id="view-detection" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">AI Safety Detection Log</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Automated detection event stream, confidence classifications and inference explanations.</p>
+        </div>
+        <input type="text" id="detection-search-input" onkeyup="filterDetections()" placeholder="Search detections, stations, cameras..." class="h-7 px-2.5 bg-[var(--surface)] border border-[var(--border)] rounded text-xs text-[var(--foreground)] focus:outline-none w-64">
+      </div>
+
+      <!-- Filter Pills -->
+      <div class="flex flex-wrap items-center gap-1.5 pb-1">
+        <button onclick="filterDetectionCategory('ALL')" class="det-pill active px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--foreground)] text-[var(--background)] transition-colors">All categories</button>
+        <button onclick="filterDetectionCategory('Track Intrusion')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Track intrusion</button>
+        <button onclick="filterDetectionCategory('Yellow-Line Crossing')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Yellow-line crossing</button>
+        <button onclick="filterDetectionCategory('Accidental Fall')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Accidental fall</button>
+        <button onclick="filterDetectionCategory('Suspicious Loitering')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Suspicious loitering</button>
+        <button onclick="filterDetectionCategory('Unusual Movement')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Unusual movement</button>
+        <button onclick="filterDetectionCategory('Crowd Surge')" class="det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors">Crowd surge</button>
+      </div>
+
+      <!-- Detections Table -->
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--surface-secondary)] border-b border-[var(--border)] text-[11px] font-medium text-[var(--muted-foreground)] select-none">
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('id')">Detection ID ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('category')">Category ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('camera')">Camera ID ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('platform')">Station & Platform ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('confidence')">Confidence ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('severity')">Severity ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortDetectionsTable('time')">Timestamp ↕</th>
+                <th class="py-2.5 px-4">Status</th>
+                <th class="py-2.5 px-4 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="detections-table-body" class="divide-y divide-[var(--border-subtle)] text-xs">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: INCIDENTS ==================== -->
+    <section id="view-incidents" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Incident Management System</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Comprehensive audit trail of active platform incidents, operator assignments, and remediation workflows.</p>
+        </div>
+        <button onclick="openNewIncidentModal()" class="h-7 px-3 bg-[#2457A7] dark:bg-[#78A7EA] text-white dark:text-[#151A22] rounded text-xs font-medium flex items-center space-x-1.5 transition-colors">
+          <span>+ Log manual incident</span>
+        </button>
+      </div>
+
+      <!-- Filters Strip -->
+      <div class="p-3 bg-[var(--surface)] border border-[var(--border)] rounded flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex flex-wrap items-center gap-2">
+          <input type="text" id="incidents-search-input" onkeyup="filterIncidentsTable()" placeholder="Search incidents, stations, operators..." class="h-7 px-2.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded text-xs text-[var(--foreground)] focus:outline-none w-64">
+          
+          <select id="incidents-severity-select" onchange="filterIncidentsTable()" class="h-7 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] rounded text-xs focus:outline-none">
+            <option value="ALL">All Severities</option>
+            <option value="CRITICAL">Critical</option>
+            <option value="WARNING">Warning</option>
+            <option value="CAUTION">Caution</option>
+            <option value="NOMINAL">Nominal</option>
+          </select>
+
+          <select id="incidents-status-select" onchange="filterIncidentsTable()" class="h-7 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] rounded text-xs focus:outline-none">
+            <option value="ALL">All Statuses</option>
+            <option value="New">New</option>
+            <option value="Acknowledged">Acknowledged</option>
+            <option value="Investigating">Investigating</option>
+            <option value="Dispatched">Dispatched</option>
+            <option value="Resolved">Resolved</option>
+          </select>
+
+          <select id="incidents-line-select" onchange="filterIncidentsTable()" class="h-7 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] rounded text-xs focus:outline-none">
+            <option value="ALL">All Metro Lines</option>
+            <option value="Yellow Line">Yellow Line (Line 2)</option>
+            <option value="Blue Line">Blue Line (Line 3/4)</option>
+            <option value="Red Line">Red Line (Line 1)</option>
+            <option value="Violet Line">Violet Line (Line 6)</option>
+          </select>
+        </div>
+
+        <div class="text-[11px] text-[var(--muted-foreground)] font-mono" id="incidents-filter-count">
+          Showing 7 incidents
+        </div>
+      </div>
+
+      <!-- Incident Table -->
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--surface-secondary)] border-b border-[var(--border)] text-[11px] font-medium text-[var(--muted-foreground)] select-none">
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('id')">Incident ID ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('classification')">Classification ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('platform')">Station & Platform ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('severity')">Severity ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('operator')">Assigned Operator ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('time')">Time Logged ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortIncidentsFullTable('status')">Status ↕</th>
+                <th class="py-2.5 px-4 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="incidents-table-body" class="divide-y divide-[var(--border-subtle)] text-xs">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 5: EMERGENCY RESPONSE ==================== -->
+    <section id="view-emergency" class="tab-content space-y-5">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--critical)] tracking-tight flex items-center gap-2">
+            <span>Emergency Response Centre (OCC Control)</span>
+          </h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Critical incident escalation, simulated traction power interlocks, and passenger PA broadcast dispatch.</p>
+        </div>
+        <span class="px-2.5 py-0.5 rounded bg-[var(--critical-bg)] border border-[var(--critical-border)] text-[var(--critical)] font-mono text-[11px] font-medium uppercase">
+          Condition Red Active
+        </span>
+      </div>
+
+      <!-- Operational Disclaimer -->
+      <div class="p-3 bg-[var(--surface)] border border-[var(--border)] border-l-[3px] border-l-[var(--critical)] rounded text-xs space-y-1">
+        <div class="font-medium text-[var(--foreground)]">Simulated Metro Operations Notice</div>
+        <p class="text-[11px] text-[var(--muted-foreground)] leading-relaxed">
+          In accordance with railway safety protocols, all emergency escalations, traction power commands, and automated audio warnings executed in this workstation are control-room drills and operational audit records. Physical fail-safe interlocks remain under independent hardware control.
+        </p>
+      </div>
+
+      <!-- 7-Step Stepper -->
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 space-y-2.5">
+        <div class="text-xs font-medium text-[var(--foreground)]">7-Step Safety Escalation Protocol Status</div>
+        <div class="grid grid-cols-1 sm:grid-cols-7 gap-2 text-center text-[10px]">
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--success)]">
+            <div class="font-medium">1. AI Detection</div>
+            <div class="text-[9px] text-[var(--muted-foreground)] mt-0.5">Completed (42s ago)</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--success)]">
+            <div class="font-medium">2. Risk Classify</div>
+            <div class="text-[9px] text-[var(--muted-foreground)] mt-0.5">Critical Assigned</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--warning-bg)] border border-[var(--warning-border)] text-[var(--warning)]">
+            <div class="font-medium">3. Platform Warning</div>
+            <div class="text-[9px] text-[var(--warning)] mt-0.5">Active PA Siren</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--success)]">
+            <div class="font-medium">4. Control Alert</div>
+            <div class="text-[9px] text-[var(--muted-foreground)] mt-0.5">Acknowledged (JD)</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border-2 border-[#2457A7] dark:border-[#78A7EA] text-[var(--foreground)] font-medium">
+            <div>5. Operator Assess</div>
+            <div class="text-[9px] text-[var(--primary)] mt-0.5">In Progress</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--muted-foreground)]">
+            <div class="font-medium">6. Auth Escalation</div>
+            <div class="text-[9px] mt-0.5">Pending Authorization</div>
+          </div>
+          <div class="p-2 rounded bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--muted-foreground)]">
+            <div class="font-medium">7. Resolution</div>
+            <div class="text-[9px] mt-0.5">Pending Track Clear</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Brief -->
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
+            <div class="text-xs font-medium text-[var(--foreground)]">Active Critical Incident #INC-8942</div>
+            <span class="text-[10px] font-mono text-[var(--critical)]">T+ 03:42 elapsed</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="p-2 bg-[var(--surface-secondary)] rounded">
+              <span class="text-[10px] text-[var(--muted-foreground)] block">Station & Platform</span>
+              <span class="font-medium text-[var(--foreground)]">Rajiv Chowk Plat 3 (Down-Line)</span>
+            </div>
+            <div class="p-2 bg-[var(--surface-secondary)] rounded">
+              <span class="text-[10px] text-[var(--muted-foreground)] block">Classification</span>
+              <span class="font-medium text-[var(--critical)]">Track Guideway Intrusion</span>
+            </div>
+            <div class="p-2 bg-[var(--surface-secondary)] rounded">
+              <span class="text-[10px] text-[var(--muted-foreground)] block">Primary Optical Sensor</span>
+              <span class="font-mono text-[var(--foreground)]">CAM-103 (4K 60 FPS)</span>
+            </div>
+            <div class="p-2 bg-[var(--surface-secondary)] rounded">
+              <span class="text-[10px] text-[var(--muted-foreground)] block">Assigned Unit</span>
+              <span class="font-medium text-[var(--foreground)]">Officer J. Cooper (SCR Unit B)</span>
+            </div>
+          </div>
+          
+          <div class="pt-2 flex flex-col gap-2">
+            <button onclick="triggerEmergencyAction('PA_BROADCAST', 'Rajiv Chowk Plat 3')" class="w-full h-8 bg-[var(--warning)] hover:opacity-90 text-white rounded text-xs font-medium transition-opacity">
+              Broadcast Immediate Platform PA & PIDS Warning
+            </button>
+            <button onclick="triggerEmergencyAction('QRT_DISPATCH', 'Rajiv Chowk Plat 3')" class="w-full h-8 bg-[#2457A7] dark:bg-[#78A7EA] text-white dark:text-[#151A22] rounded text-xs font-medium transition-opacity">
+              Dispatch Station Quick Response Team (QRT)
+            </button>
+          </div>
+        </div>
+
+        <!-- ETS Panel -->
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-[var(--border-subtle)]">
+            <div class="text-xs font-medium text-[var(--foreground)]">Traction Power & Guideway Interlock (Simulated)</div>
+            <span class="text-[10px] font-mono text-[var(--success)]">Telemetry: Nominal</span>
+          </div>
+
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 bg-[var(--surface-secondary)] rounded border border-[var(--border-subtle)] flex items-center justify-between">
+              <div>
+                <div class="font-medium text-[var(--foreground)]">Rajiv Chowk Down-Line Speed Restriction</div>
+                <div class="text-[11px] text-[var(--muted-foreground)]">Speed restriction set to 15 km/h</div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]">
+                RESTRICTED 15 KM/H
+              </span>
+            </div>
+
+            <div class="p-2.5 bg-[var(--critical-bg)] border border-[var(--critical-border)] rounded flex items-center justify-between">
+              <div>
+                <div class="font-medium text-[var(--critical)]">Simulated Emergency Trip Switch (ETS)</div>
+                <div class="text-[11px] text-[var(--muted-foreground)]">Requires double authorization to simulate trip</div>
+              </div>
+              <button onclick="confirmTripSwitch()" class="px-3 py-1 bg-[var(--critical)] text-white rounded text-xs font-medium">
+                Simulate ETS Trip
+              </button>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-[var(--border-subtle)]">
+            <div class="text-[11px] font-medium text-[var(--foreground)] mb-1">Audit Log Transcript</div>
+            <div class="text-[10px] text-[var(--muted-foreground)] space-y-1 font-mono">
+              <div>[15:42:01] AI_TRIGGER: CAM-103 Track Breach Confirmed (RC-04)</div>
+              <div>[15:42:15] AUDIO_ALARM: Automated Platform Siren broadcast</div>
+              <div>[15:42:30] OP_ACK: Operator J. Doe acknowledged incident</div>
+              <div>[15:43:00] DISPATCH: Officer J. Cooper dispatched SCR Unit B</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 6: ANALYTICS ==================== -->
+    <section id="view-analytics" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Platform Safety Analytics</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Statistical hazard modeling, incident trends, crowd surge metrics and operator response intervals.</p>
+        </div>
+        <div class="inline-flex rounded border border-[var(--border)] bg-[var(--surface)] text-xs p-0.5">
+          <button class="px-2.5 py-0.5 rounded bg-[var(--surface-secondary)] text-[var(--foreground)] font-medium">Today</button>
+          <button class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">This Week</button>
+          <button class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]">This Month</button>
+        </div>
+      </div>
+
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)] grid grid-cols-1 sm:grid-cols-4">
+        <div class="p-4">
+          <div class="text-xs text-[var(--muted-foreground)]">Mean Time to Acknowledge</div>
+          <div class="text-lg font-semibold text-[var(--foreground)] mt-1 font-mono">18.4s</div>
+          <div class="text-[11px] text-[var(--success)] mt-0.5">↓ 4.2s vs last month</div>
+        </div>
+        <div class="p-4">
+          <div class="text-xs text-[var(--muted-foreground)]">Mean Time to Resolve</div>
+          <div class="text-lg font-semibold text-[var(--foreground)] mt-1 font-mono">4.2m</div>
+          <div class="text-[11px] text-[var(--success)] mt-0.5">98.2% within safety SLA</div>
+        </div>
+        <div class="p-4">
+          <div class="text-xs text-[var(--muted-foreground)]">AI Detection Precision</div>
+          <div class="text-lg font-semibold text-[var(--foreground)] mt-1 font-mono">99.4%</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">0.3% false positive rate</div>
+        </div>
+        <div class="p-4">
+          <div class="text-xs text-[var(--muted-foreground)]">Peak Platform Crowd Load</div>
+          <div class="text-lg font-semibold text-[var(--warning)] mt-1 font-mono">78%</div>
+          <div class="text-[11px] text-[var(--muted-foreground)] mt-0.5">Rajiv Chowk Concourse (14:30)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 7: CAMERA MANAGEMENT ==================== -->
+    <section id="view-cameras" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Camera Infrastructure & Hardware</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Manage 430 connected optical sensors, PTZ streams, resolution parameters, and edge AI health.</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <input type="text" id="camera-search-input" onkeyup="filterCameraTable()" placeholder="Search camera ID or station..." class="h-7 px-2.5 bg-[var(--surface)] border border-[var(--border)] rounded text-xs text-[var(--foreground)] focus:outline-none w-56">
+          <select id="camera-status-select" onchange="filterCameraTable()" class="h-7 px-2 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] rounded text-xs focus:outline-none">
+            <option value="ALL">All Statuses</option>
+            <option value="Operational">Operational (428)</option>
+            <option value="Maintenance">Maintenance (2)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bg-[var(--surface)] border border-[var(--border)] rounded overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[var(--surface-secondary)] border-b border-[var(--border)] text-[11px] font-medium text-[var(--muted-foreground)] select-none">
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortCamerasTable('id')">Camera ID ↕</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortCamerasTable('location')">Station & Location ↕</th>
+                <th class="py-2.5 px-4">Stream Specs</th>
+                <th class="py-2.5 px-4 cursor-pointer hover:text-[var(--foreground)]" onclick="sortCamerasTable('latency')">Latency ↕</th>
+                <th class="py-2.5 px-4">Active AI Models</th>
+                <th class="py-2.5 px-4">Status</th>
+                <th class="py-2.5 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="camera-table-body" class="divide-y divide-[var(--border-subtle)] text-xs">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 8: REPORTS ==================== -->
+    <section id="view-reports" class="tab-content space-y-4">
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between pb-3 border-b border-[var(--border)] gap-2">
+        <div>
+          <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Safety Audit Reports</h1>
+          <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Generate regulatory compliance reports, shift summaries, and raw CSV data exports.</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="openPrintableReportModal()" class="h-7 px-3 bg-[var(--surface)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--surface-secondary)] rounded text-xs font-medium transition-colors">
+            Print Report View
+          </button>
+          <button onclick="exportCSVReport()" class="h-7 px-3 bg-[#2457A7] dark:bg-[#78A7EA] text-white dark:text-[#151A22] rounded text-xs font-medium transition-colors">
+            Download CSV Audit
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-[var(--primary)] uppercase">Daily shift audit</div>
+            <div class="text-sm font-medium text-[var(--foreground)] mt-1">Daily Safety Summary — Nov 14, 2026</div>
+            <p class="text-xs text-[var(--muted-foreground)] mt-1 leading-relaxed">
+              Consolidated 24-hour log of platform line breaches, guard responses, and track occupancy infractions.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
+            <span class="text-[var(--muted-foreground)]">48 Events logged</span>
+            <button onclick="exportCSVReport()" class="text-[var(--primary)] font-medium hover:underline">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-[var(--primary)] uppercase">Weekly audit</div>
+            <div class="text-sm font-medium text-[var(--foreground)] mt-1">Weekly Rail Safety Audit (W46)</div>
+            <p class="text-xs text-[var(--muted-foreground)] mt-1 leading-relaxed">
+              Comprehensive statistical review of passenger volume, escalator stops, and AI model precision across all hubs.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
+            <span class="text-[var(--muted-foreground)]">312 Events logged</span>
+            <button onclick="exportCSVReport()" class="text-[var(--primary)] font-medium hover:underline">Export CSV</button>
+          </div>
+        </div>
+
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-[var(--primary)] uppercase">Monthly audit</div>
+            <div class="text-sm font-medium text-[var(--foreground)] mt-1">October 2026 Operations Compliance</div>
+            <p class="text-xs text-[var(--muted-foreground)] mt-1 leading-relaxed">
+              Formal regulatory audit documentation prepared for Metro Transit Safety Commission review.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-[var(--border-subtle)] flex items-center justify-between text-xs">
+            <span class="text-[var(--muted-foreground)]">Signed off by Chief Op.</span>
+            <button onclick="exportCSVReport()" class="text-[var(--primary)] font-medium hover:underline">Export CSV</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 9: SETTINGS ==================== -->
+    <section id="view-settings" class="tab-content space-y-5">
+      <div class="pb-3 border-b border-[var(--border)]">
+        <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">System & Display Settings</h1>
+        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Configure operator workstation display preferences, audio siren volumes, and AI inference thresholds.</p>
+      </div>
+
+      <div class="max-w-xl space-y-4">
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 space-y-3">
+          <div class="text-xs font-medium text-[var(--foreground)] pb-2 border-b border-[var(--border-subtle)]">Workstation appearance</div>
+          <div class="flex items-center justify-between text-xs">
+            <div>
+              <div class="font-medium text-[var(--foreground)]">Interface color theme</div>
+              <div class="text-[11px] text-[var(--muted-foreground)]">Select between light surface tokens and dark control room styling.</div>
+            </div>
+            <div class="inline-flex rounded border border-[var(--border)] bg-[var(--surface-secondary)] text-xs p-0.5">
+              <button onclick="setExplicitTheme('light')" id="settings-theme-light" class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)]">Light</button>
+              <button onclick="setExplicitTheme('dark')" id="settings-theme-dark" class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)]">Dark</button>
+              <button onclick="setExplicitTheme('system')" id="settings-theme-system" class="px-2.5 py-0.5 rounded text-[var(--muted-foreground)]">System</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-[var(--surface)] border border-[var(--border)] rounded p-4 space-y-3">
+          <div class="text-xs font-medium text-[var(--foreground)] pb-2 border-b border-[var(--border-subtle)]">Audible alert triggers</div>
+          <div class="flex items-center justify-between text-xs">
+            <div>
+              <div class="font-medium text-[var(--foreground)]">Critical Track Breach Siren</div>
+              <div class="text-[11px] text-[var(--muted-foreground)]">Sound dual-tone audible alarm when track intrusion is confirmed.</div>
+            </div>
+            <input type="checkbox" checked class="rounded border-[var(--border)] text-[#2457A7] focus:ring-0">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 10: DIAGNOSTICS ==================== -->
+    <section id="view-diagnostics" class="tab-content space-y-4">
+      <div class="pb-3 border-b border-[var(--border)]">
+        <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">System Telemetry & Edge Diagnostics</h1>
+        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Real-time performance metrics of distributed edge inference nodes and optical video pipelines.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded">
+          <div class="text-xs text-[var(--muted-foreground)]">Edge inference latency</div>
+          <div class="text-lg font-semibold font-mono text-[var(--foreground)] mt-1">14.2 ms</div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Model: YOLO-Rail v4.2</div>
+        </div>
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded">
+          <div class="text-xs text-[var(--muted-foreground)]">Optical network bandwidth</div>
+          <div class="text-lg font-semibold font-mono text-[var(--foreground)] mt-1">1.24 Gbps</div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">430 RTSP streams</div>
+        </div>
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded">
+          <div class="text-xs text-[var(--muted-foreground)]">Buffer retention</div>
+          <div class="text-lg font-semibold font-mono text-[var(--foreground)] mt-1">94.2% Free</div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">18.4 TB / 20.0 TB</div>
+        </div>
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded">
+          <div class="text-xs text-[var(--muted-foreground)]">Edge nodes active</div>
+          <div class="text-lg font-semibold font-mono text-[var(--success)] mt-1">12 / 12</div>
+          <div class="text-[11px] text-[var(--success)]">All nodes operational</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 11: HELP DESK ==================== -->
+    <section id="view-help" class="tab-content space-y-4">
+      <div class="pb-3 border-b border-[var(--border)]">
+        <h1 class="text-lg font-semibold text-[var(--foreground)] tracking-tight">Standard Operating Procedures (SOP)</h1>
+        <p class="text-xs text-[var(--muted-foreground)] mt-0.5">Station operator guidelines, emergency contact directory, and crisis escalation protocols.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded space-y-2">
+          <div class="text-xs font-semibold text-[var(--foreground)]">SOP-01: Track Guideway Intrusion Protocol</div>
+          <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">
+            1. Immediately acknowledge control room visual alert.<br>
+            2. Activate automated Platform Warning PA siren.<br>
+            3. Dispatch designated platform security unit (Zone Perimeter).<br>
+            4. Verify track envelope visual clearance before resetting condition yellow.
+          </p>
+        </div>
+
+        <div class="p-4 bg-[var(--surface)] border border-[var(--border)] rounded space-y-2">
+          <div class="text-xs font-semibold text-[var(--foreground)]">SOP-02: Crowd Surge & Turnstile Metering</div>
+          <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">
+            1. When platform density exceeds 80%, activate automated turnstile metering.<br>
+            2. Switch concourse electronic signage to "Platform Restricted Access".<br>
+            3. Announce next incoming train arrival on central PA system.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== MODALS & DRAWERS ==================== -->
+
+  <!-- 1. Incident Detail Side Drawer -->
+  <div id="incident-drawer-overlay" class="fixed inset-0 bg-black/40 z-50 hidden" onclick="closeIncidentDrawer()"></div>
+  <div id="incident-drawer" class="fixed top-0 right-0 bottom-0 w-full sm:w-[460px] bg-[var(--surface)] border-l border-[var(--border)] z-50 transform translate-x-full transition-transform duration-200 flex flex-col justify-between shadow-xl">
+    <div class="flex-1 overflow-y-auto p-5 space-y-4">
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+        <div class="flex items-center space-x-2">
+          <span id="drawer-incident-id" class="text-sm font-semibold font-mono text-[#2457A7] dark:text-[#78A7EA]">INC-8942</span>
+          <span id="drawer-severity-badge" class="px-2 py-0.5 rounded text-[10px] font-medium bg-[var(--critical-bg)] text-[var(--critical)] border border-[var(--critical-border)]">CRITICAL</span>
+        </div>
+        <button onclick="closeIncidentDrawer()" class="p-1 rounded hover:bg-[var(--surface-secondary)] text-[var(--muted-foreground)]">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Detection Snapshot -->
+      <div class="border border-[var(--border)] rounded overflow-hidden bg-slate-950 text-white relative">
+        <div class="h-48 flex items-center justify-center relative overflow-hidden">
+          <svg class="w-full h-full opacity-80" viewBox="0 0 400 200">
+            <rect x="0" y="0" width="400" height="115" fill="#1e293b"/>
+            <rect x="0" y="105" width="400" height="8" fill="#eab308" opacity="0.35"/>
+            <line x1="0" y1="115" x2="400" y2="115" stroke="#facc15" stroke-width="3" stroke-dasharray="8 4"/>
+            <rect x="0" y="117" width="400" height="83" fill="#0b1120"/>
+            <line x1="0" y1="145" x2="400" y2="145" stroke="#64748b" stroke-width="2.5"/>
+            <line x1="0" y1="175" x2="400" y2="175" stroke="#64748b" stroke-width="2.5"/>
+            <!-- Intrusion Bounding Box -->
+            <rect x="180" y="90" width="48" height="78" fill="none" stroke="#C83D3D" stroke-width="1.8" stroke-dasharray="2 2"/>
+            <rect x="180" y="74" width="85" height="16" fill="#C83D3D"/>
+            <text x="184" y="86" fill="white" font-size="9" font-family="monospace">PERSON [98.6%]</text>
+          </svg>
+          <div class="cctv-scanline absolute inset-0"></div>
+          <div class="absolute top-2 left-2 px-1.5 py-0.5 rounded bg-black/70 font-mono text-[9px] text-white">
+            CAM-103 · RC-04 DOWN-LINE EVIDENCE
+          </div>
+          <div class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 font-mono text-[9px] text-red-400">
+            CHAINAGE: 14+220
+          </div>
+        </div>
+      </div>
+
+      <!-- Incident Meta Info -->
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Classification</span>
+          <span id="drawer-classification" class="font-medium text-[var(--foreground)]">Track Intrusion</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Station & Platform</span>
+          <span id="drawer-platform" class="font-medium text-[var(--foreground)]">Rajiv Chowk Plat 3 (Down-Line)</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Operational Status</span>
+          <span id="drawer-status" class="font-medium text-[var(--warning)]">Dispatched</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Assigned Operator</span>
+          <span id="drawer-operator" class="font-medium text-[var(--foreground)]">Officer J. Cooper (SCR Unit B)</span>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="pt-1">
+        <div class="text-xs font-medium text-[var(--foreground)] mb-2">Event Timeline</div>
+        <div class="border-l border-[var(--border)] ml-2 space-y-3 pl-3 text-xs">
+          <div class="relative">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--critical)] absolute -left-[16px] top-1.5"></span>
+            <div class="text-[10px] font-mono text-[var(--muted-foreground)]">15:42:01 UTC</div>
+            <div class="font-medium text-[var(--foreground)]">AI Detection Confirmed</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">YOLO-Rail detected individual past yellow safety line into track envelope.</div>
+          </div>
+          <div class="relative">
+            <span class="w-1.5 h-1.5 rounded-full bg-[var(--warning)] absolute -left-[16px] top-1.5"></span>
+            <div class="text-[10px] font-mono text-[var(--muted-foreground)]">15:42:15 UTC</div>
+            <div class="font-medium text-[var(--foreground)]">Automated PA & PIDS Broadcast</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">Platform 3 warning siren & display message triggered.</div>
+          </div>
+          <div class="relative">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#2457A7] dark:bg-[#78A7EA] absolute -left-[16px] top-1.5"></span>
+            <div class="text-[10px] font-mono text-[var(--muted-foreground)]">15:42:40 UTC</div>
+            <div class="font-medium text-[var(--foreground)]">Guard Unit Dispatched</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">Officer J. Cooper en route via south perimeter gate.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operator Notes -->
+      <div class="pt-1 space-y-2">
+        <div class="text-xs font-medium text-[var(--foreground)]">Operator Log & Notes</div>
+        <div id="drawer-notes-list" class="space-y-1.5 text-[11px]">
+          <div class="p-2 bg-[var(--surface-secondary)] rounded border border-[var(--border-subtle)]">
+            <div class="font-medium text-[var(--foreground)]">JD (Operator) · 15:43 UTC</div>
+            <div class="text-[var(--muted-foreground)] mt-0.5">Radio confirmed with Officer Cooper. Passenger identified retrieval of dropped mobile device.</div>
+          </div>
+        </div>
+        <div class="flex gap-1.5 mt-2">
+          <input type="text" id="new-operator-note-input" placeholder="Add operator note..." class="h-7 flex-1 px-2.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded text-xs text-[var(--foreground)] focus:outline-none">
+          <button onclick="addOperatorNote()" class="h-7 px-3 bg-[#2457A7] dark:bg-[#78A7EA] text-white dark:text-[#151A22] rounded text-xs font-medium transition-colors">Post</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="p-4 border-t border-[var(--border)] bg-[var(--surface)] flex items-center justify-between gap-2">
+      <button onclick="resolveCurrentIncident()" class="flex-1 h-8 bg-[var(--success)] text-white rounded text-xs font-medium transition-opacity hover:opacity-90">
+        Mark Resolved
+      </button>
+      <button onclick="switchTab('emergency'); closeIncidentDrawer();" class="px-3 h-8 bg-[var(--critical)] text-white rounded text-xs font-medium transition-opacity hover:opacity-90">
+        Escalate to OCC
+      </button>
+    </div>
+  </div>
+
+  <!-- 2. AI Detection Detail Modal -->
+  <div id="detection-detail-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[var(--surface)] border border-[var(--border)] rounded shadow-2xl max-w-lg w-full p-5 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-[var(--border)]">
+        <div class="flex items-center space-x-2">
+          <span id="det-modal-id" class="font-mono font-medium text-[#2457A7] dark:text-[#78A7EA]">DET-4891</span>
+          <span id="det-modal-category" class="font-medium text-xs text-[var(--foreground)]">Track Intrusion</span>
+        </div>
+        <button onclick="closeDetectionModal()" class="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3 bg-[var(--surface-secondary)] rounded border border-[var(--border-subtle)] space-y-1">
+          <div class="text-[11px] font-medium text-[var(--foreground)]">AI Model Inference Explanation</div>
+          <p id="det-modal-explanation" class="text-xs text-[var(--muted-foreground)] leading-relaxed">
+            YOLO-Rail v4.2 model detected a human silhouette crossing 1.2 meters past the tactile yellow warning boundary directly into the track envelope at Rajiv Chowk Plat 3. Optical sensor CAM-103 cross-referenced motion vectors indicating active descent.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="p-2 bg-[var(--surface-secondary)] rounded">
+            <span class="text-[10px] text-[var(--muted-foreground)] block">Model Confidence</span>
+            <span id="det-modal-confidence" class="font-mono font-medium text-[var(--success)]">98.6%</span>
+          </div>
+          <div class="p-2 bg-[var(--surface-secondary)] rounded">
+            <span class="text-[10px] text-[var(--muted-foreground)] block">Severity Assignment</span>
+            <span id="det-modal-severity" class="font-medium text-[var(--critical)]">CRITICAL</span>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-1">
+          <button onclick="triggerEmergencyAction('PA_BROADCAST', 'Selected Platform'); closeDetectionModal();" class="flex-1 h-7 bg-[var(--warning)] text-white rounded text-[11px] font-medium">
+            Broadcast PA Warning
+          </button>
+          <button onclick="openIncidentDrawer('INC-8942'); closeDetectionModal();" class="flex-1 h-7 bg-[#2457A7] text-white rounded text-[11px] font-medium">
+            Open Full Incident
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Fullscreen Camera Modal -->
+  <div id="camera-fullscreen-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col justify-between p-4">
+    <div class="flex items-center justify-between text-white pb-3 border-b border-white/20 select-none">
+      <div class="flex items-center space-x-3">
+        <span id="fs-cam-id" class="font-mono font-medium text-sm text-blue-400">CAM-103</span>
+        <span id="fs-cam-title" class="text-xs text-white/80">Rajiv Chowk Plat 3 (Down-Line)</span>
+        <span class="px-2 py-0.5 rounded bg-red-600 text-[10px] font-mono font-medium uppercase">LIVE FEED</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="fs-cam-clock" class="font-mono text-xs text-white/70">15:42:10 UTC</span>
+        <button onclick="closeFullscreenCam()" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded text-xs text-white">Exit Fullscreen (ESC)</button>
+      </div>
+    </div>
+
+    <!-- Fullscreen Video Viewport -->
+    <div class="flex-1 flex items-center justify-center relative overflow-hidden my-3">
+      <svg class="w-full h-full max-h-[80vh] border border-white/10 rounded" viewBox="0 0 600 340">
+        <rect x="0" y="0" width="600" height="200" fill="#1e293b"/>
+        <rect x="0" y="190" width="600" height="10" fill="#eab308" opacity="0.4"/>
+        <line x1="0" y1="200" x2="600" y2="200" stroke="#facc15" stroke-width="3" stroke-dasharray="10 5"/>
+        <rect x="0" y="202" width="600" height="138" fill="#0b1120"/>
+        <line x1="0" y1="240" x2="600" y2="240" stroke="#64748b" stroke-width="2.5"/>
+        <line x1="0" y1="290" x2="600" y2="290" stroke="#64748b" stroke-width="2.5"/>
+        <!-- Target Bounding Box -->
+        <rect x="260" y="150" width="70" height="110" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="3 3"/>
+        <rect x="260" y="130" width="120" height="18" fill="#ef4444"/>
+        <text x="265" y="143" fill="white" font-size="10" font-family="monospace">PERSON [98.6%]</text>
+      </svg>
+      <div class="cctv-scanline absolute inset-0"></div>
+    </div>
+
+    <div class="flex items-center justify-between text-white/70 text-xs px-2 select-none">
+      <span class="font-mono">ENCODING: H.265 · BITRATE: 8.4 Mbps · LATENCY: 14ms</span>
+      <button onclick="alert('CCTV Frame captured and saved to audit storage.')" class="px-3 py-1 bg-blue-600 text-white rounded text-xs font-medium">Capture Snapshot</button>
+    </div>
+  </div>
+
+  <!-- 4. Camera Test Stream Modal -->
+  <div id="camera-test-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[var(--surface)] border border-[var(--border)] rounded shadow-2xl max-w-sm w-full p-5 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-[var(--border)]">
+        <span class="font-medium text-xs text-[var(--foreground)]" id="test-cam-title">Camera Stream Health</span>
+        <button onclick="closeCameraTestModal()" class="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">✕</button>
+      </div>
+      <div class="space-y-2 text-xs">
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Stream Status</span>
+          <span class="text-[var(--success)] font-medium">200 OK (ONLINE)</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Packet Loss</span>
+          <span class="font-mono text-[var(--foreground)]">0.001%</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Jitter Buffer</span>
+          <span class="font-mono text-[var(--foreground)]">2.1 ms</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-[var(--border-subtle)]">
+          <span class="text-[var(--muted-foreground)]">Edge Node</span>
+          <span class="font-mono text-[var(--foreground)]">Node-04 (Rajiv Chowk)</span>
+        </div>
+      </div>
+      <button onclick="closeCameraTestModal()" class="w-full h-7 bg-[#2457A7] text-white rounded text-xs font-medium">
+        Close Diagnostics
+      </button>
+    </div>
+  </div>
+
+  <!-- 5. Search Modal (⌘K) -->
+  <div id="search-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-start justify-center pt-20 px-4" onclick="closeSearchModal(event)">
+    <div class="bg-[var(--surface)] border border-[var(--border)] rounded shadow-2xl w-full max-w-lg overflow-hidden" onclick="event.stopPropagation()">
+      <div class="p-3 border-b border-[var(--border)] flex items-center gap-2">
+        <svg class="w-4 h-4 text-[var(--muted-foreground)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="search-modal-input" onkeyup="handleSearchModalInput()" placeholder="Search lines, platforms, cameras, incidents..." class="w-full bg-transparent border-0 text-xs text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none">
+        <span class="text-[10px] font-mono text-[var(--muted-foreground)] border border-[var(--border)] px-1 rounded">ESC</span>
+      </div>
+      <div id="search-modal-results" class="max-h-60 overflow-y-auto p-2 divide-y divide-[var(--border-subtle)] text-xs">
+        <!-- Rendered results -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Confirmation Modal -->
+  <div id="confirm-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[var(--surface)] border border-[var(--border)] rounded shadow-2xl max-w-sm w-full p-5 space-y-4">
+      <div class="flex items-center space-x-2 text-[var(--critical)]">
+        <span class="font-semibold text-sm" id="confirm-modal-title">Confirm Critical Action</span>
+      </div>
+      <p class="text-xs text-[var(--muted-foreground)] leading-relaxed" id="confirm-modal-description">
+        Are you sure you want to authorize emergency escalation? This simulated action will be logged in the audit trail.
+      </p>
+      <div class="flex items-center justify-end space-x-2 pt-2">
+        <button onclick="closeConfirmModal()" class="px-3 py-1 rounded bg-[var(--surface-secondary)] text-[var(--foreground)] hover:bg-[var(--border)] text-xs font-medium">
+          Cancel
+        </button>
+        <button id="confirm-modal-btn" class="px-3 py-1 rounded bg-[var(--critical)] hover:opacity-90 text-white text-xs font-medium">
+          Confirm Action
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Printable Report Modal -->
+  <div id="printable-report-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-[var(--surface)] border border-[var(--border)] rounded shadow-2xl max-w-2xl w-full p-6 space-y-4 max-h-[85vh] overflow-y-auto text-xs">
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+        <div>
+          <div class="font-semibold text-sm text-[var(--foreground)]">Metro Command — Shift Safety Audit Log</div>
+          <div class="text-[11px] text-[var(--muted-foreground)]">Shift: Morning 06:00 - 14:00 UTC · Supervisor: Operator J. Doe</div>
+        </div>
+        <button onclick="closePrintableReportModal()" class="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">✕</button>
+      </div>
+
+      <div class="space-y-3 leading-relaxed text-[var(--muted-foreground)]">
+        <div class="p-3 bg-[var(--surface-secondary)] rounded">
+          <div class="font-medium text-[var(--foreground)] mb-1">Executive Summary</div>
+          <div>Total Platform Ingress/Egress monitored: 482,104 passengers. Guideway intrusions detected: 1 (contained within 42 seconds). Zero safety incidents escalated to physical service halt. AI detection accuracy maintained at 99.4%.</div>
+        </div>
+
+        <div class="text-xs font-medium text-[var(--foreground)] pt-1">Recorded Incidents Log (Sample)</div>
+        <div class="border border-[var(--border)] rounded overflow-hidden">
+          <table class="w-full text-left border-collapse text-xs">
+            <tr class="bg-[var(--surface-secondary)] border-b border-[var(--border)] font-medium">
+              <th class="p-2">ID</th>
+              <th class="p-2">Classification</th>
+              <th class="p-2">Station</th>
+              <th class="p-2">Severity</th>
+              <th class="p-2">Status</th>
+            </tr>
+            <tr class="border-b border-[var(--border-subtle)]">
+              <td class="p-2 font-mono">INC-8942</td>
+              <td class="p-2">Track Intrusion</td>
+              <td class="p-2">Rajiv Chowk Plat 3</td>
+              <td class="p-2 text-[var(--critical)] font-medium">CRITICAL</td>
+              <td class="p-2">Dispatched</td>
+            </tr>
+            <tr class="border-b border-[var(--border-subtle)]">
+              <td class="p-2 font-mono">INC-8941</td>
+              <td class="p-2">Yellow-Line Crossing</td>
+              <td class="p-2">Kashmere Gate Plat 1</td>
+              <td class="p-2 text-[var(--warning)] font-medium">WARNING</td>
+              <td class="p-2">Acknowledged</td>
+            </tr>
+            <tr>
+              <td class="p-2 font-mono">INC-8940</td>
+              <td class="p-2">Unattended Luggage</td>
+              <td class="p-2">Central Secretariat Plat 2</td>
+              <td class="p-2">CAUTION</td>
+              <td class="p-2">Investigating</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end space-x-2 pt-2 border-t border-[var(--border)]">
+        <button onclick="closePrintableReportModal()" class="px-3 py-1 rounded bg-[var(--surface-secondary)] text-[var(--foreground)] text-xs font-medium">Close</button>
+        <button onclick="window.print()" class="px-3 py-1 rounded bg-[#2457A7] text-white text-xs font-medium">Print Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LOCAL MOCK DATA & APP LOGIC ==================== -->
+  <script>
+    // --- Mock Data ---
+    const mockIncidents = [
+      { id: 'INC-8942', classification: 'Track Intrusion', platform: 'Rajiv Chowk Plat 3 (Down-Line)', line: 'Blue Line', severity: 'CRITICAL', time: '42s ago', status: 'Dispatched', operator: 'Officer J. Cooper (SCR B)' },
+      { id: 'INC-8941', classification: 'Yellow-Line Crossing', platform: 'Kashmere Gate Plat 1 (Up-Line)', line: 'Yellow Line', severity: 'WARNING', time: '2m ago', status: 'Acknowledged', operator: 'Auto PA Chime' },
+      { id: 'INC-8940', classification: 'Unattended Luggage', platform: 'Central Secretariat Plat 2', line: 'Violet Line', severity: 'CAUTION', time: '8m ago', status: 'Investigating', operator: 'Operator J. Doe' },
+      { id: 'INC-8939', classification: 'Crowd Surge > 85%', platform: 'Rajiv Chowk Concourse Gates', line: 'Yellow Line', severity: 'CAUTION', time: '14m ago', status: 'Gate Metering', operator: 'Auto-Metering' },
+      { id: 'INC-8938', classification: 'Wheelchair Mobility Assist', platform: 'Barakhamba Rd Plat 1 Elevator', line: 'Blue Line', severity: 'NOMINAL', time: '22m ago', status: 'Resolved', operator: 'Officer D. Vance' },
+      { id: 'INC-8937', classification: 'Yellow-Line Crossing', platform: 'Noida Sector 62 Plat 2', line: 'Blue Line', severity: 'WARNING', time: '35m ago', status: 'Resolved', operator: 'Auto PA Chime' },
+      { id: 'INC-8936', classification: 'Unusual Loitering', platform: 'Kashmere Gate Gate 4 Concourse', line: 'Red Line', severity: 'CAUTION', time: '48m ago', status: 'Resolved', operator: 'Officer M. Ray' },
+    ];
+
+    const mockDetections = [
+      { id: 'DET-4891', category: 'Track Intrusion', camera: 'CAM-103', platform: 'Rajiv Chowk Plat 3', confidence: '98.6%', severity: 'Critical', time: '15:42:01', status: 'Flagged', explanation: 'Silhouette detected 1.2m past tactile yellow strip into guideway track envelope chainage 14+220.' },
+      { id: 'DET-4890', category: 'Yellow-Line Crossing', camera: 'CAM-101', platform: 'Kashmere Gate Plat 1', confidence: '94.2%', severity: 'Warning', time: '15:40:12', status: 'Verified', explanation: 'Commuter footwear crossed 500mm safety boundary prior to incoming train arrival announcement.' },
+      { id: 'DET-4889', category: 'Accidental Fall', camera: 'CAM-108', platform: 'Rajiv Chowk Escalator B', confidence: '91.8%', severity: 'Critical', time: '15:34:55', status: 'Dispatched', explanation: 'Motion sensor vector indicates sudden slip on downward escalator comb plate.' },
+      { id: 'DET-4888', category: 'Suspicious Loitering', camera: 'CAM-204', platform: 'Central Secretariat Concourse', confidence: '88.4%', severity: 'Caution', time: '15:28:10', status: 'Dismissed', explanation: 'Stationary presence over 18 minutes near emergency equipment cabinet.' },
+      { id: 'DET-4887', category: 'Crowd Surge', camera: 'CAM-210', platform: 'Rajiv Chowk Concourse', confidence: '96.5%', severity: 'Warning', time: '15:22:40', status: 'Verified', explanation: 'Turnstile queue density reached 78% exceeding standard transit threshold.' },
+      { id: 'DET-4886', category: 'Silent Distress Gesture', camera: 'CAM-112', platform: 'Barakhamba Rd Plat 2', confidence: '89.1%', severity: 'Warning', time: '15:15:02', status: 'Verified', explanation: 'Standard distress palm gesture identified near platform emergency call point.' },
+      { id: 'DET-4885', category: 'Unusual Movement', camera: 'CAM-305', platform: 'South Tunnel Portal', confidence: '92.3%', severity: 'Caution', time: '15:02:18', status: 'Dismissed', explanation: 'Perimeter optical trip triggered by airborne paper debris near tunnel portal.' },
+    ];
+
+    const mockCameras = [
+      { id: 'CAM-101', location: 'Kashmere Gate Plat 1 North (Up-Line)', station: 'Kashmere Gate', specs: '1080p · 30 FPS', latency: '14 ms', models: 'Yellow-Line v4.2', status: 'Operational' },
+      { id: 'CAM-102', location: 'Kashmere Gate Plat 1 Center', station: 'Kashmere Gate', specs: '1080p · 30 FPS', latency: '12 ms', models: 'Density, Luggage', status: 'Operational' },
+      { id: 'CAM-103', location: 'Rajiv Chowk Plat 3 (Down-Line East)', station: 'Rajiv Chowk', specs: '4K · 60 FPS', latency: '16 ms', models: 'Track Intrusion v4.2', status: 'Operational' },
+      { id: 'CAM-104', location: 'Rajiv Chowk Plat 2 West', station: 'Rajiv Chowk', specs: '1080p · 15 FPS', latency: '42 ms', models: 'Lens Occlusion', status: 'Maintenance' },
+      { id: 'CAM-108', location: 'Rajiv Chowk Escalator Bank B', station: 'Rajiv Chowk', specs: '1080p · 30 FPS', latency: '15 ms', models: 'Fall Detection v2', status: 'Operational' },
+      { id: 'CAM-112', location: 'Barakhamba Rd Concourse South', station: 'Barakhamba Road', specs: '1080p · 30 FPS', latency: '13 ms', models: 'Distress Gesture', status: 'Operational' },
+      { id: 'CAM-204', location: 'Central Secretariat Concourse AFC', station: 'Central Secretariat', specs: '4K · 30 FPS', latency: '14 ms', models: 'Crowd Flow Heatmap', status: 'Operational' },
+      { id: 'CAM-219', location: 'Kashmere Gate Gate B Concourse', station: 'Kashmere Gate', specs: '720p · 4 FPS', latency: '180 ms', models: 'Degraded Feed', status: 'Maintenance' },
+      { id: 'CAM-305', location: 'South Tunnel Guideway Portal', station: 'Guideway', specs: '1080p · 30 FPS', latency: '15 ms', models: 'Perimeter Breach', status: 'Operational' },
+    ];
+
+    const mockActivity = [
+      { time: '15:42', text: 'AI CAM-103 flagged track intrusion on Rajiv Chowk Plat 3.' },
+      { time: '15:40', text: 'Automated PA chime warning broadcast to Kashmere Gate Plat 1.' },
+      { time: '15:34', text: 'SCR Unit B dispatched to Rajiv Chowk south perimeter gate.' },
+      { time: '15:22', text: 'Gate metering lifted at Rajiv Chowk as density dropped to 64%.' },
+      { time: '15:10', text: 'Routine optical sensor calibration completed for Zone 4.' },
+    ];
+
+    let currentSelectedIncident = mockIncidents[0];
+    let overviewSortCol = 'time';
+    let overviewSortAsc = false;
+
+    // --- Tab Switching ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      const targetView = document.getElementById(`view-${tabId}`);
+      if (targetView) targetView.classList.add('active');
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        if (btn.getAttribute('data-nav') === tabId) {
+          btn.className = "nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors font-medium bg-[var(--surface-secondary)] text-[var(--foreground)] border-l-2 border-[#2457A7] dark:border-[#78A7EA]";
+          const icon = btn.querySelector('svg');
+          if (icon) icon.className = "w-4 h-4 text-[#2457A7] dark:text-[#78A7EA]";
+        } else {
+          btn.className = "nav-item w-full flex items-center justify-between px-2.5 py-1.5 rounded text-left transition-colors text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface-secondary)]";
+          const icon = btn.querySelector('svg');
+          if (icon) icon.className = "w-4 h-4";
+        }
+      });
+
+      if (tabId === 'monitoring') renderCCTVGrid();
+      if (tabId === 'incidents') renderIncidentsTable();
+      if (tabId === 'detection') renderDetectionsTable();
+      if (tabId === 'cameras') renderCameraTable();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+
+    // --- Theme Controls ---
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('metro-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('metro-theme', 'dark');
+      }
+      updateThemeButtons();
+    }
+
+    function setExplicitTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('metro-theme', 'dark');
+      } else if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('metro-theme', 'light');
+      } else {
+        localStorage.removeItem('metro-theme');
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+      updateThemeButtons();
+    }
+
+    function updateThemeButtons() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const lightBtn = document.getElementById('settings-theme-light');
+      const darkBtn = document.getElementById('settings-theme-dark');
+      const systemBtn = document.getElementById('settings-theme-system');
+      const saved = localStorage.getItem('metro-theme');
+
+      if (!lightBtn) return;
+      lightBtn.className = saved === 'light' ? 'px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground)] font-medium shadow-xs' : 'px-2.5 py-0.5 rounded text-[var(--muted-foreground)]';
+      darkBtn.className = saved === 'dark' ? 'px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground)] font-medium shadow-xs' : 'px-2.5 py-0.5 rounded text-[var(--muted-foreground)]';
+      systemBtn.className = !saved ? 'px-2.5 py-0.5 rounded bg-[var(--surface)] text-[var(--foreground)] font-medium shadow-xs' : 'px-2.5 py-0.5 rounded text-[var(--muted-foreground)]';
+    }
+
+    // --- Overview Table Logic ---
+    function renderOverviewIncidents(filterSev = 'ALL') {
+      const tbody = document.getElementById('overview-incidents-tbody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let list = [...mockIncidents];
+      if (filterSev !== 'ALL') {
+        list = list.filter(i => i.severity === filterSev);
+      }
+
+      list.sort((a, b) => {
+        let vA = a[overviewSortCol];
+        let vB = b[overviewSortCol];
+        if (vA < vB) return overviewSortAsc ? -1 : 1;
+        if (vA > vB) return overviewSortAsc ? 1 : -1;
+        return 0;
+      });
+
+      list.slice(0, 5).forEach(item => {
+        let sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--surface-secondary)] text-[var(--muted-foreground)] border border-[var(--border)]">CAUTION</span>`;
+        if (item.severity === 'CRITICAL') {
+          sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--critical-bg)] text-[var(--critical)] border border-[var(--critical-border)]">CRITICAL</span>`;
+        } else if (item.severity === 'WARNING') {
+          sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]">WARNING</span>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] cursor-pointer transition-colors h-10";
+        tr.onclick = () => openIncidentDrawer(item.id);
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono text-[var(--foreground)] font-medium">${item.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.classification}</td>
+          <td class="py-2.5 px-4 text-[var(--muted-foreground)]">
+            <span class="px-1 py-0.2 rounded text-[10px] font-mono mr-1.5 bg-[var(--surface-secondary)] text-[var(--foreground)] border border-[var(--border-subtle)]">${item.line}</span>
+            ${item.platform}
+          </td>
+          <td class="py-2.5 px-4">${sevBadge}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.time}</td>
+          <td class="py-2.5 px-4 text-right font-medium text-[var(--foreground)]">${item.status}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('overview-table-count').textContent = `Showing ${Math.min(5, list.length)} of ${list.length} incidents`;
+    }
+
+    function sortOverviewTable(col) {
+      if (overviewSortCol === col) {
+        overviewSortAsc = !overviewSortAsc;
+      } else {
+        overviewSortCol = col;
+        overviewSortAsc = true;
+      }
+      renderOverviewIncidents();
+    }
+
+    function filterOverviewSeverity(sev) {
+      document.querySelectorAll('.severity-pill').forEach(btn => {
+        if (btn.textContent.toUpperCase() === sev) {
+          btn.className = "severity-pill active px-2.5 py-0.5 rounded font-medium bg-[var(--surface)] text-[var(--foreground)] shadow-xs";
+        } else {
+          btn.className = "severity-pill px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]";
+        }
+      });
+      renderOverviewIncidents(sev);
+    }
+
+    // --- Overview Activity Feed ---
+    function renderOverviewActivity() {
+      const container = document.getElementById('overview-activity-feed');
+      if (!container) return;
+      container.innerHTML = mockActivity.map(act => `
+        <div class="flex items-baseline space-x-2">
+          <span class="font-mono text-[10px] text-[var(--muted-foreground)] shrink-0">${act.time}</span>
+          <div class="text-[12px] text-[var(--muted-foreground)] leading-tight">
+            ${act.text}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --- CCTV Live Monitoring Rendering ---
+    let cctvGridMode = '2x2';
+    function setCCTVGridMode(mode) {
+      cctvGridMode = mode;
+      document.querySelectorAll('.cctv-grid-btn').forEach(b => {
+        b.className = b.id === `grid-btn-${mode}` 
+          ? 'cctv-grid-btn active px-2.5 py-0.5 rounded font-medium bg-[var(--surface)] text-[var(--foreground)] shadow-xs'
+          : 'cctv-grid-btn px-2.5 py-0.5 rounded text-[var(--muted-foreground)] hover:text-[var(--foreground)]';
+      });
+      renderCCTVGrid();
+    }
+
+    function renderCCTVGrid() {
+      const container = document.getElementById('cctv-grid-container');
+      if (!container) return;
+
+      let colsClass = 'grid-cols-1 md:grid-cols-2';
+      let count = 4;
+      if (cctvGridMode === '3x2') {
+        colsClass = 'grid-cols-1 md:grid-cols-3';
+        count = 6;
+      } else if (cctvGridMode === '4x4') {
+        colsClass = 'grid-cols-2 md:grid-cols-4';
+        count = 8;
+      }
+      container.className = `grid ${colsClass} gap-3.5`;
+
+      const stationVal = document.getElementById('monitoring-platform-filter').value;
+      let cams = mockCameras;
+      if (stationVal !== 'ALL') {
+        cams = mockCameras.filter(c => c.station === stationVal);
+      }
+
+      container.innerHTML = cams.slice(0, count).map((cam, idx) => {
+        const hasCritical = cam.id === 'CAM-103';
+        const hasWarning = cam.id === 'CAM-101';
+        
+        return `
+          <div class="bg-[var(--surface)] border border-[var(--border)] rounded overflow-hidden flex flex-col">
+            <div class="px-3 py-1.5 bg-[var(--surface-secondary)] border-b border-[var(--border)] flex items-center justify-between text-xs">
+              <div class="flex items-center space-x-2">
+                <span class="font-mono font-medium text-[var(--foreground)]">${cam.id}</span>
+                <span class="text-[var(--muted-foreground)] truncate max-w-[200px]">${cam.location}</span>
+              </div>
+              <div class="flex items-center space-x-1.5">
+                <span class="w-1.5 h-1.5 rounded-full ${cam.status === 'Operational' ? 'bg-[var(--critical)]' : 'bg-[var(--warning)]'}"></span>
+                <span class="text-[10px] font-mono font-medium ${cam.status === 'Operational' ? 'text-[var(--critical)]' : 'text-[var(--warning)]'}">
+                  ${cam.status === 'Operational' ? 'LIVE' : 'MAINT'}
+                </span>
+              </div>
+            </div>
+
+            <!-- Video Simulation Window -->
+            <div class="h-48 bg-[#0D1219] relative flex items-center justify-center overflow-hidden cursor-pointer group" onclick="openFullscreenCam('${cam.id}')">
+              <svg class="w-full h-full opacity-75" viewBox="0 0 320 160">
+                <rect x="0" y="0" width="320" height="95" fill="#1e293b"/>
+                <rect x="0" y="90" width="320" height="6" fill="#eab308" opacity="0.35"/>
+                <line x1="0" y1="95" x2="320" y2="95" stroke="#eab308" stroke-width="2" stroke-dasharray="6 3"/>
+                <rect x="0" y="97" width="320" height="63" fill="#0b1120"/>
+                <line x1="0" y1="120" x2="320" y2="120" stroke="#64748b" stroke-width="1.8"/>
+                <line x1="0" y1="140" x2="320" y2="140" stroke="#64748b" stroke-width="1.8"/>
+
+                ${hasCritical ? `
+                  <rect x="140" y="75" width="40" height="60" fill="none" stroke="#C83D3D" stroke-width="1.5" stroke-dasharray="2 2"/>
+                  <rect x="140" y="62" width="60" height="13" fill="#C83D3D"/>
+                  <text x="142" y="72" fill="white" font-size="7" font-family="monospace">TRACK INTRUSION</text>
+                ` : ''}
+
+                ${hasWarning ? `
+                  <rect x="70" y="55" width="32" height="52" fill="none" stroke="#C58A28" stroke-width="1.5" stroke-dasharray="2 2"/>
+                  <rect x="70" y="44" width="65" height="11" fill="#C58A28"/>
+                  <text x="72" y="52" fill="white" font-size="7" font-family="monospace">YELLOW LINE BREACH</text>
+                ` : ''}
+              </svg>
+              <div class="cctv-scanline absolute inset-0"></div>
+
+              <!-- Live Watermark Overlay -->
+              <div class="absolute bottom-2 left-2 text-[9px] font-mono text-white/80 bg-black/70 px-1.5 py-0.5 rounded flex items-center gap-1.5">
+                <span>${cam.specs}</span>
+                <span>·</span>
+                <span>15:42:${(10 + idx).toString().padStart(2, '0')} UTC</span>
+              </div>
+              <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 px-2 py-0.5 rounded text-[10px] text-white">
+                Enlarge ⤢
+              </div>
+            </div>
+
+            <!-- Footer Stats -->
+            <div class="px-3 py-1.5 bg-[var(--surface)] border-t border-[var(--border)] flex items-center justify-between text-[11px] text-[var(--muted-foreground)]">
+              <span>Model: <span class="text-[var(--foreground)] font-medium">${cam.models}</span></span>
+              <span>Latency: <span class="font-mono text-[var(--foreground)]">${cam.latency}</span></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openFullscreenCam(camId) {
+      const cam = mockCameras.find(c => c.id === camId) || mockCameras[0];
+      document.getElementById('fs-cam-id').textContent = cam.id;
+      document.getElementById('fs-cam-title').textContent = cam.location;
+      document.getElementById('camera-fullscreen-modal').classList.remove('hidden');
+    }
+
+    function closeFullscreenCam() {
+      document.getElementById('camera-fullscreen-modal').classList.add('hidden');
+    }
+
+    // --- AI Detection Table & Modal Logic ---
+    function renderDetectionsTable(cat = 'ALL') {
+      const tbody = document.getElementById('detections-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let list = mockDetections;
+      if (cat !== 'ALL') {
+        list = mockDetections.filter(d => d.category === cat);
+      }
+
+      list.forEach(item => {
+        let sevClass = 'text-[var(--muted-foreground)]';
+        if (item.severity === 'Critical') sevClass = 'text-[var(--critical)] font-medium';
+        if (item.severity === 'Warning') sevClass = 'text-[var(--warning)] font-medium';
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] transition-colors h-10";
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${item.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.category}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.camera}</td>
+          <td class="py-2.5 px-4 text-[var(--muted-foreground)]">${item.platform}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--success)] font-medium">${item.confidence}</td>
+          <td class="py-2.5 px-4 ${sevClass}">${item.severity}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.time}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${item.status}</td>
+          <td class="py-2.5 px-4 text-right">
+            <button onclick="inspectDetection('${item.id}')" class="text-xs text-[var(--primary)] hover:underline font-medium">Inspect</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterDetectionCategory(cat) {
+      document.querySelectorAll('.det-pill').forEach(p => {
+        if (p.textContent.toLowerCase() === cat.toLowerCase() || (cat === 'ALL' && p.textContent.toLowerCase().includes('all'))) {
+          p.className = "det-pill active px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--foreground)] text-[var(--background)] transition-colors";
+        } else {
+          p.className = "det-pill px-2.5 py-0.5 rounded text-xs font-medium bg-[var(--surface)] border border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors";
+        }
+      });
+      renderDetectionsTable(cat);
+    }
+
+    function filterDetections() {
+      const q = document.getElementById('detection-search-input').value.toLowerCase();
+      const filtered = mockDetections.filter(d => 
+        d.id.toLowerCase().includes(q) || 
+        d.category.toLowerCase().includes(q) || 
+        d.camera.toLowerCase().includes(q) || 
+        d.platform.toLowerCase().includes(q)
+      );
+      const tbody = document.getElementById('detections-table-body');
+      tbody.innerHTML = '';
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] transition-colors h-10";
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${item.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.category}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.camera}</td>
+          <td class="py-2.5 px-4 text-[var(--muted-foreground)]">${item.platform}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--success)] font-medium">${item.confidence}</td>
+          <td class="py-2.5 px-4">${item.severity}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.time}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${item.status}</td>
+          <td class="py-2.5 px-4 text-right">
+            <button onclick="inspectDetection('${item.id}')" class="text-xs text-[var(--primary)] hover:underline font-medium">Inspect</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function inspectDetection(detId) {
+      const det = mockDetections.find(d => d.id === detId) || mockDetections[0];
+      document.getElementById('det-modal-id').textContent = det.id;
+      document.getElementById('det-modal-category').textContent = det.category;
+      document.getElementById('det-modal-confidence').textContent = det.confidence;
+      document.getElementById('det-modal-severity').textContent = det.severity.toUpperCase();
+      document.getElementById('det-modal-explanation').textContent = det.explanation;
+      document.getElementById('detection-detail-modal').classList.remove('hidden');
+    }
+
+    function closeDetectionModal() {
+      document.getElementById('detection-detail-modal').classList.add('hidden');
+    }
+
+    // --- Incident Table Logic ---
+    let incidentsSortCol = 'time';
+    let incidentsSortAsc = false;
+
+    function renderIncidentsTable() {
+      const tbody = document.getElementById('incidents-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      let list = [...mockIncidents];
+      list.sort((a, b) => {
+        let vA = a[incidentsSortCol];
+        let vB = b[incidentsSortCol];
+        if (vA < vB) return incidentsSortAsc ? -1 : 1;
+        if (vA > vB) return incidentsSortAsc ? 1 : -1;
+        return 0;
+      });
+
+      list.forEach(item => {
+        let sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--surface-secondary)] text-[var(--muted-foreground)] border border-[var(--border)]">CAUTION</span>`;
+        if (item.severity === 'CRITICAL') {
+          sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--critical-bg)] text-[var(--critical)] border border-[var(--critical-border)]">CRITICAL</span>`;
+        } else if (item.severity === 'WARNING') {
+          sevBadge = `<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[11px] font-medium bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]">WARNING</span>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] cursor-pointer transition-colors h-11";
+        tr.onclick = () => openIncidentDrawer(item.id);
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${item.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.classification}</td>
+          <td class="py-2.5 px-4 text-[var(--muted-foreground)]">
+            <span class="px-1.5 py-0.2 rounded text-[10px] font-mono mr-1 bg-[var(--surface-secondary)] text-[var(--foreground)] border border-[var(--border-subtle)]">${item.line}</span>
+            ${item.platform}
+          </td>
+          <td class="py-2.5 px-4">${sevBadge}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${item.operator}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.time}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.status}</td>
+          <td class="py-2.5 px-4 text-right">
+            <button class="text-xs text-[var(--primary)] hover:underline font-medium">Details →</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('incidents-filter-count').textContent = `Showing ${mockIncidents.length} incidents`;
+    }
+
+    function sortIncidentsFullTable(col) {
+      if (incidentsSortCol === col) {
+        incidentsSortAsc = !incidentsSortAsc;
+      } else {
+        incidentsSortCol = col;
+        incidentsSortAsc = true;
+      }
+      renderIncidentsTable();
+    }
+
+    function filterIncidentsTable() {
+      const q = document.getElementById('incidents-search-input').value.toLowerCase();
+      const sev = document.getElementById('incidents-severity-select').value;
+      const stat = document.getElementById('incidents-status-select').value;
+      const line = document.getElementById('incidents-line-select').value;
+
+      const filtered = mockIncidents.filter(i => {
+        const matchesQ = i.id.toLowerCase().includes(q) || i.classification.toLowerCase().includes(q) || i.platform.toLowerCase().includes(q) || i.operator.toLowerCase().includes(q);
+        const matchesSev = sev === 'ALL' || i.severity === sev;
+        const matchesStat = stat === 'ALL' || i.status === stat;
+        const matchesLine = line === 'ALL' || i.line === line;
+        return matchesQ && matchesSev && matchesStat && matchesLine;
+      });
+
+      const tbody = document.getElementById('incidents-table-body');
+      tbody.innerHTML = '';
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] cursor-pointer transition-colors h-11";
+        tr.onclick = () => openIncidentDrawer(item.id);
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${item.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.classification}</td>
+          <td class="py-2.5 px-4 text-[var(--muted-foreground)]">
+            <span class="px-1.5 py-0.2 rounded text-[10px] font-mono mr-1 bg-[var(--surface-secondary)] text-[var(--foreground)] border border-[var(--border-subtle)]">${item.line}</span>
+            ${item.platform}
+          </td>
+          <td class="py-2.5 px-4">${item.severity}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${item.operator}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${item.time}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${item.status}</td>
+          <td class="py-2.5 px-4 text-right"><span class="text-[var(--primary)]">Details →</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('incidents-filter-count').textContent = `Showing ${filtered.length} of ${mockIncidents.length} incidents`;
+    }
+
+    // --- Camera Table Logic ---
+    function renderCameraTable() {
+      const tbody = document.getElementById('camera-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      mockCameras.forEach(cam => {
+        const isOp = cam.status === 'Operational';
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] transition-colors h-10";
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${cam.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${cam.location}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${cam.specs}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${cam.latency}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${cam.models}</td>
+          <td class="py-2.5 px-4">
+            <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-medium ${isOp ? 'bg-[var(--success-bg)] text-[var(--success)] border border-[var(--success-border)]' : 'bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]'}">
+              ${cam.status}
+            </span>
+          </td>
+          <td class="py-2.5 px-4 text-right">
+            <button onclick="testCameraStream('${cam.id}')" class="text-xs text-[var(--primary)] hover:underline font-medium">Test Stream</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterCameraTable() {
+      const q = document.getElementById('camera-search-input').value.toLowerCase();
+      const stat = document.getElementById('camera-status-select').value;
+      const filtered = mockCameras.filter(c => {
+        const matchQ = c.id.toLowerCase().includes(q) || c.location.toLowerCase().includes(q);
+        const matchS = stat === 'ALL' || c.status === stat;
+        return matchQ && matchS;
+      });
+      const tbody = document.getElementById('camera-table-body');
+      tbody.innerHTML = '';
+      filtered.forEach(cam => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-[var(--surface-secondary)] transition-colors h-10";
+        tr.innerHTML = `
+          <td class="py-2.5 px-4 font-mono font-medium text-[var(--foreground)]">${cam.id}</td>
+          <td class="py-2.5 px-4 font-medium text-[var(--foreground)]">${cam.location}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${cam.specs}</td>
+          <td class="py-2.5 px-4 font-mono text-[var(--muted-foreground)]">${cam.latency}</td>
+          <td class="py-2.5 px-4 text-[var(--foreground)]">${cam.models}</td>
+          <td class="py-2.5 px-4 text-xs font-medium">${cam.status}</td>
+          <td class="py-2.5 px-4 text-right"><button onclick="testCameraStream('${cam.id}')" class="text-xs text-[var(--primary)] hover:underline">Stream</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function testCameraStream(camId) {
+      const cam = mockCameras.find(c => c.id === camId) || mockCameras[0];
+      document.getElementById('test-cam-title').textContent = `${cam.id} Optical Health Check (${cam.station})`;
+      document.getElementById('camera-test-modal').classList.remove('hidden');
+    }
+
+    function closeCameraTestModal() {
+      document.getElementById('camera-test-modal').classList.add('hidden');
+    }
+
+    // --- Drawer Management ---
+    function openIncidentDrawer(id) {
+      const inc = mockIncidents.find(i => i.id === id) || mockIncidents[0];
+      currentSelectedIncident = inc;
+      document.getElementById('drawer-incident-id').textContent = inc.id;
+      document.getElementById('drawer-classification').textContent = inc.classification;
+      document.getElementById('drawer-platform').textContent = `${inc.line} · ${inc.platform}`;
+      document.getElementById('drawer-status').textContent = inc.status;
+      document.getElementById('drawer-operator').textContent = inc.operator;
+
+      const badge = document.getElementById('drawer-severity-badge');
+      badge.textContent = inc.severity;
+      badge.className = inc.severity === 'CRITICAL' 
+        ? 'px-2 py-0.5 rounded text-[10px] font-medium bg-[var(--critical-bg)] text-[var(--critical)] border border-[var(--critical-border)]'
+        : 'px-2 py-0.5 rounded text-[10px] font-medium bg-[var(--warning-bg)] text-[var(--warning)] border border-[var(--warning-border)]';
+
+      document.getElementById('incident-drawer-overlay').classList.remove('hidden');
+      document.getElementById('incident-drawer').classList.remove('translate-x-full');
+    }
+
+    function closeIncidentDrawer() {
+      document.getElementById('incident-drawer-overlay').classList.add('hidden');
+      document.getElementById('incident-drawer').classList.add('translate-x-full');
+    }
+
+    function addOperatorNote() {
+      const input = document.getElementById('new-operator-note-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const list = document.getElementById('drawer-notes-list');
+      const now = new Date();
+      const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const div = document.createElement('div');
+      div.className = "p-2 bg-[var(--surface-secondary)] rounded border border-[var(--border-subtle)]";
+      div.innerHTML = `
+        <div class="font-medium text-[var(--foreground)]">JD (Operator) · ${timeStr} UTC</div>
+        <div class="text-[var(--muted-foreground)] mt-0.5">${text}</div>
+      `;
+      list.appendChild(div);
+      input.value = '';
+    }
+
+    function resolveCurrentIncident() {
+      if (!currentSelectedIncident) return;
+      currentSelectedIncident.status = 'Resolved';
+      renderOverviewIncidents();
+      renderIncidentsTable();
+      closeIncidentDrawer();
+    }
+
+    // --- Notifications Popover ---
+    function toggleNotifications() {
+      const pop = document.getElementById('notifications-popover');
+      pop.classList.toggle('hidden');
+    }
+
+    function clearNotifications() {
+      const pop = document.getElementById('notifications-popover');
+      pop.classList.add('hidden');
+    }
+
+    // --- Search Modal (⌘K) ---
+    function openSearchModal() {
+      document.getElementById('search-modal').classList.remove('hidden');
+      const input = document.getElementById('search-modal-input');
+      input.value = '';
+      input.focus();
+      handleSearchModalInput();
+    }
+
+    function closeSearchModal(e) {
+      document.getElementById('search-modal').classList.add('hidden');
+    }
+
+    function handleSearchModalInput() {
+      const q = document.getElementById('search-modal-input').value.toLowerCase();
+      const resultsDiv = document.getElementById('search-modal-results');
+      
+      const searchItems = [
+        { title: 'Overview Dashboard', category: 'Navigation', action: () => switchTab('overview') },
+        { title: 'Live CCTV Monitoring', category: 'Navigation', action: () => switchTab('monitoring') },
+        { title: 'AI Detection Workspace', category: 'Navigation', action: () => switchTab('detection') },
+        { title: 'Incident Management', category: 'Navigation', action: () => switchTab('incidents') },
+        { title: 'Emergency Response Centre (OCC)', category: 'Navigation', action: () => switchTab('emergency') },
+        { title: 'INC-8942: Track Intrusion on Rajiv Chowk Plat 3', category: 'Incident', action: () => openIncidentDrawer('INC-8942') },
+        { title: 'CAM-103: Rajiv Chowk Plat 3 Track East Camera', category: 'Hardware', action: () => openFullscreenCam('CAM-103') },
+        { title: 'System Diagnostics & Telemetry', category: 'Diagnostics', action: () => switchTab('diagnostics') },
+      ];
+
+      const matches = searchItems.filter(item => item.title.toLowerCase().includes(q) || item.category.toLowerCase().includes(q));
+      
+      if (matches.length === 0) {
+        resultsDiv.innerHTML = `<div class="p-4 text-center text-xs text-[var(--muted-foreground)]">No matching stations, cameras, or incidents found.</div>`;
+        return;
+      }
+
+      resultsDiv.innerHTML = matches.map((item, idx) => `
+        <div onclick="executeSearchAction(${idx})" class="p-2 hover:bg-[var(--surface-secondary)] rounded cursor-pointer flex items-center justify-between">
+          <span class="font-medium text-[var(--foreground)]">${item.title}</span>
+          <span class="text-[10px] font-mono text-[var(--muted-foreground)] px-1.5 py-0.2 rounded bg-[var(--surface-secondary)]">${item.category}</span>
+        </div>
+      `).join('');
+
+      window._currentSearchMatches = matches;
+    }
+
+    function executeSearchAction(idx) {
+      if (window._currentSearchMatches && window._currentSearchMatches[idx]) {
+        window._currentSearchMatches[idx].action();
+        closeSearchModal();
+      }
+    }
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        openSearchModal();
+      }
+      if (e.key === 'Escape') {
+        closeSearchModal();
+        closeIncidentDrawer();
+        closeConfirmModal();
+        closeDetectionModal();
+        closeFullscreenCam();
+        closeCameraTestModal();
+        closePrintableReportModal();
+      }
+    });
+
+    // --- Confirmation Dialogs ---
+    function triggerEmergencyDispatchModal() {
+      openConfirmModal(
+        'Authorize Station Quick Response Team Dispatch',
+        'Initiating emergency dispatch will alert Station Security Unit B and broadcast automated safety warnings on Rajiv Chowk Platform 3. This simulated action will be recorded in the shift audit.',
+        () => {
+          switchTab('emergency');
+          closeConfirmModal();
+        }
+      );
+    }
+
+    function simulateInterlockAction() {
+      openConfirmModal(
+        'Simulate Guideway Traction Restriction',
+        'This command enforces a simulated 15 km/h restriction on Rajiv Chowk Down-Line in the operator console. Do you wish to proceed?',
+        () => {
+          closeConfirmModal();
+          alert('Simulated Traction Interlock engaged. Restriction speed broadcasted to console.');
+        }
+      );
+    }
+
+    function confirmTripSwitch() {
+      openConfirmModal(
+        'Simulate Emergency Trip Switch (ETS) Activation',
+        'WARNING: This triggers a simulated ETS trip drill sequence for Rajiv Chowk Down-Line. Are you sure?',
+        () => {
+          closeConfirmModal();
+          alert('Simulated Emergency Trip drill sequence initiated. All alarms recorded in audit log.');
+        }
+      );
+    }
+
+    function triggerEmergencyAction(actionType, target) {
+      openConfirmModal(
+        `Confirm Emergency Action: ${actionType}`,
+        `Are you sure you want to trigger ${actionType} for ${target}? (Simulated Control Room Protocol)`,
+        () => {
+          closeConfirmModal();
+          alert(`Simulated action ${actionType} triggered for ${target}.`);
+        }
+      );
+    }
+
+    function acknowledgeAlert(incId) {
+      alert(`Alert ${incId} acknowledged by Operator J. Doe (Rajiv Chowk OCC).`);
+    }
+
+    function openConfirmModal(title, desc, onConfirm) {
+      document.getElementById('confirm-modal-title').textContent = title;
+      document.getElementById('confirm-modal-description').textContent = desc;
+      const btn = document.getElementById('confirm-modal-btn');
+      btn.onclick = onConfirm;
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    // --- Report Modals & CSV Export ---
+    function openPrintableReportModal() {
+      document.getElementById('printable-report-modal').classList.remove('hidden');
+    }
+
+    function closePrintableReportModal() {
+      document.getElementById('printable-report-modal').classList.add('hidden');
+    }
+
+    function exportCSVReport() {
+      let csv = 'Incident ID,Classification,Metro Line,Station & Platform,Severity,Detection Time,Status,Assigned Operator\n';
+      mockIncidents.forEach(i => {
+        csv += `"${i.id}","${i.classification}","${i.line}","${i.platform}","${i.severity}","${i.time}","${i.status}","${i.operator}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'metro_command_safety_audit.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // --- Initial Boot ---
+    window.addEventListener('DOMContentLoaded', () => {
+      renderOverviewIncidents();
+      renderOverviewActivity();
+      updateThemeButtons();
+    });
   </script>
-
-
-</body></html>
+</body>
+</html>
